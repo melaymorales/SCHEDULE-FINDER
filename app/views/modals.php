@@ -247,6 +247,54 @@
     
 </form>
 
+<!-- UPLOAD SCHEDULE -->
+
+<form method="POST" enctype="multipart/form-data">
+
+    <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Course Schedule</h5>
+                        
+                </div>
+                <div class="modal-body">
+                        <p class="">Only JPG, JPEG, PNG & GIF files are allowed.</p>
+                        <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" accept="image/*"  required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger " data-bs-dismiss="modal">cancel</button>
+                    <button type="submit" class="btn btn-success" name="submit">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="POST" enctype="multipart/form-data">
+    <div class="modal fade" id="UploadModal_teacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Teacher Schedule</h5>
+                        
+                </div>
+                <div class="modal-body">
+                        <p class="">Only JPG, JPEG, PNG & GIF files are allowed.</p>
+                        <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" accept="image/*"  required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger " data-bs-dismiss="modal">cancel</button>
+                    <button type="submit" class="btn btn-success" name="submit_teacher">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 
 <!-- PREVIEW -->
 

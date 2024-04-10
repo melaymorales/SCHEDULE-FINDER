@@ -20,6 +20,7 @@ class Admin extends Controller{
       $this->import();
       $this->update();
       $this->delete();
+      $this->upload();
       
       
       $course = new Course();
@@ -680,6 +681,7 @@ class Admin extends Controller{
            $_SESSION['message']="The teacher has been successfully deleted.";
 
       }else if(isset($_POST['save_student'])){
+
             $student = new Student();
             $id = $_SESSION['id'];
 
@@ -693,5 +695,164 @@ class Admin extends Controller{
 
   }
 
+  private function upload(){
+      $course = new Course();
+      $teacher = new Teacher();
+      if(isset($_POST['submit'])){
+          
+            $target_dir = "../app/views/assets/img/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        
+        
+            if(isset($_POST["submit"])) {
+
+                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+
+                if($check !== false) {
+                    $uploadOk = 1;
+                } else {
+                  $uploadOk = 0;
+
+                  $_SESSION['alert_unsuccess_course']="d-show";
+                  $_SESSION['message']="File is not an image..";
+                    
+                }
+            }
+        
+          
+            if ($_FILES["fileToUpload"]["size"] > 500000) {
+                $_SESSION['alert_unsuccess_course']="d-show";
+                $_SESSION['message']="Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+        
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+                  $_SESSION['alert_unsuccess_course']="d-show";
+                  $_SESSION['message'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                  $uploadOk = 0;
+            }
+        
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                  $_SESSION['alert_unsuccess_course']="d-show";
+                  $_SESSION['message']="Sorry, your file was not uploaded.";
+                
+            // if everything is ok, try to upload file
+            } else {
+                
+                $duplicateImage="";
+                $imageName= htmlspecialchars(basename( $_FILES["fileToUpload"]["name"]));
+                $arr['image']=  $imageName;
+                $image_course = $course->where($arr);
+                $image_teacher = $teacher->where($arr);
+        
+                  if(empty($image_course) && empty($image_teacher)){
+
+                    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+               
+                          $id =  $_SESSION['id'];
+                          date_default_timezone_set('Asia/Manila');
+                          $currentDateTime = date('m/d/Y h:ia');
+                          $arr_image['image'] = $imageName;
+                          $arr_image['date'] =$currentDateTime;
+                          $course->update_course($id,$arr_image);
+
+
+                       } else {
+
+                              $_SESSION['alert_unsuccess_course']="d-show";
+                              $_SESSION['message'] = "Sorry, there was an error uploading your file.";
+                       }
+                }else{
+                    $duplicateImage=$imageName;
+                }
+            }
+        
+            if($duplicateImage != ""){
+                echo ' <script> alert(""); window.location.href="admin.php"  </script>';
+                $_SESSION['alert_unsuccess_course']="d-show";
+                $_SESSION['message'] = "The file [".$duplicateImage."] already exist!";
+            }else{
+                  $_SESSION['alert_success_course']="d-show";
+                  $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"]))."has been uploaded.";
+               
+            }
+
+        }else if(isset($_POST['submit_teacher'])){
+
+ 
+            $target_dir = "../app/views/assets/img/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        
+            // Check file size
+            if ($_FILES["fileToUpload"]["size"] > 500000) {
+                  $_SESSION['alert_unsuccess_teacher']="d-show";
+                  $_SESSION['message'] = "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+            // Allow certain file formats
+        
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+                  $_SESSION['alert_unsuccess_teacher']="d-show";
+                  $_SESSION['message'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+              
+                $uploadOk = 0;
+            }
+        
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                  $_SESSION['alert_unsuccess_teacher']="d-show";
+                  $_SESSION['message'] = "Sorry, your file was not uploaded.";
+              
+            // if everything is ok, try to upload file
+            } else {
+
+                $duplicateImage="";
+                $imageName= htmlspecialchars( basename( $_FILES["fileToUpload"]["name"]));
+
+                $arr['image'] = $imageName;
+
+                $course_image = $course->where($arr);
+                $teacher_image = $teacher->where($arr);
+   
+                if(empty($course_image) && empty($teacher_image)){
+
+                    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+               
+                          $id =  $_SESSION['id'];
+                          date_default_timezone_set('Asia/Manila');
+                          $currentDateTime = date('m/d/Y h:ia');
+
+                          $arr_image['image'] = $imageName;
+                          $arr_image['date'] =$currentDateTime;
+                          $teacher->update($id,$arr_image);
+                       
+                       } else {
+                              $_SESSION['alert_unsuccess_teacher']="d-show";
+                              $_SESSION['message'] = "Sorry, there was an error uploading your file.";
+                       }
+                }else{
+                    $duplicateImage=$imageName;
+                }
+            }
+        
+            if($duplicateImage != ""){
+                  $_SESSION['alert_unsuccess_teacher']="d-show";
+                  $_SESSION['message'] = "The file ".$duplicateImage." already exist!";
+            }else{
+                  $_SESSION['alert_success_teacher']="d-show";
+                  $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+            }
+        }
+  }
 
 }
