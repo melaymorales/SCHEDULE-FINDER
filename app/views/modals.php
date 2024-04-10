@@ -1,3 +1,77 @@
+<!-- EDIT MODAL -->
+<form  method="POST">
+    <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
+         <div class="modal-dialog">
+            <div class="modal-content">
+                 <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Course / Strand</h5>
+                </div>
+                <div class="modal-body">
+
+                     <div class="view_user_data">
+                      
+                     </div>
+                                
+                </div>
+                <div class="modal-footer">
+                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cancel</button>
+                    <button type="submit" class="btn btn-success" name="bntUP-Course">update</button>
+                </div>
+                        
+             </div>
+        </div>  
+    </div>
+</form>
+
+<form method="POST">
+    <div class="modal fade" id="modalTeacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Teacher</h5>
+                </div>
+
+                <div class="modal-body">
+
+                     <div class="view_user_data"></div>
+                                
+                </div>
+                <div class="modal-footer">
+                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cancel</button>
+                     <button type="submit" class="btn btn-success" name="bntUP_teacher">update</button>
+                 </div>
+                             
+             </div>
+         </div>  
+    </div>
+</form>
+
+<form  method="POST">
+    <div class="modal fade" id="modalStudent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Student</h5>
+                </div>
+                <div class="modal-body">
+
+                   <div class="view_user_data"></div>
+                                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cancel</button>
+                    <button type="submit" class="btn btn-success" name="bntUP_student">update</button>
+                </div>      
+                         
+           </div>
+        </div>  
+    </div>
+</form>
+
 <!-- MODAL FOR IMPORT -->
 
 <form  method="POST" enctype="multipart/form-data">
@@ -90,12 +164,6 @@
         </div>
     </div>
 </form>
-
-            
-
-
-
-
 
 <!-- PREVIEW -->
 

@@ -18,7 +18,9 @@ class Admin extends Controller{
 
       $this->register();
       $this->import();
-
+      $this->update();
+      
+      
       $course = new Course();
       $teacher = new Teacher();
       $student = new Student();
@@ -110,34 +112,16 @@ class Admin extends Controller{
                   $_SESSION['alert_unsuccess_course']="d-show";
                   $_SESSION['message']="The Course attempting to register is already exist.";
 
-                  // global $alert_unsuccess_course;
-                  // $alert_unsuccess_course = "d-show";
-                  // global $message_course;
-                  // $message_course = "The Course attempting to register is already exist.";
-            //       echo '
-            //       <script> 
-            //           alert("The Course attempting to register is already exist.");
-            //       </script>
-            //   ';
             }else{
                $course->insert($arr);
                $_SESSION['alert_success_course']="d-show";
                $_SESSION['message']="Successfully registered New Course.";
-               
-            //    global $alert_unsuccess_course;
-            //    $alert_unsuccess_course = "d-show";
-            //    global $message_course;
-            //    $message_course = "Successfully registered New Course.";
-            //    echo '
-            //    <script> 
-            //        alert("Successfully registered New Course.");
-            //    </script>
-            //    ';
+           
 
               
             }
 
-        //    $this->view('admin');
+     
 
             
       }else if(isset($_POST['AddTeacher'])){
@@ -579,4 +563,90 @@ class Admin extends Controller{
       }
 
   }
+
+  private function update(){
+      if(isset($_POST['bntUP-Course'])){
+            $course = new Course();
+            $id=$_POST['id'];
+            $arr['course'] = ucwords($_POST['course']);
+            $arr['acronym'] = strtoupper($_POST['acronym']);
+            $arr['year'] = $_POST['year'];
+            $arr['section'] = strtoupper($_POST['section']);
+            
+            $data = $course->where($arr);
+            
+            if(!empty($data)){
+                  $_SESSION['alert_unsuccess_course']="d-show";
+                  $_SESSION['message']="The Course attempting to update is already exist.";
+
+            }else{
+               $course->update_course($id,$arr);
+               $_SESSION['alert_success_course']="d-show";
+               $_SESSION['message']="Successfully updated the Course.";
+ 
+            }
+              
+      }else if(isset($_POST['bntUP_teacher'])){
+            $teacher = new Teacher();
+
+            $arr_id['row'] = $id = $_POST['id'];
+
+            $arr['firstname'] = ucfirst($_POST['firstname']);
+            $arr['lastname']= ucfirst($_POST['lastname']);
+
+            $data = $teacher->where($arr);
+
+            if(!empty($data)){
+                  $_SESSION['alert_unsuccess_teacher']="d-show";
+                  $_SESSION['message']="The Teacher attempting to update is already exist.";
+        
+               }else{
+                  $data = $teacher->update($id,$arr);
+                  $_SESSION['alert_success_teacher']="d-show";
+                  $_SESSION['message']="Successfully Update the Teacher.";
+   
+            }
+            
+        }else if(isset($_POST['bntUP_student'])){
+            $student = new Student();
+
+            $id = $_POST['row'];
+
+            $arr['firstname'] = ucfirst( $_POST['fname']);
+            $arr['lastname'] = ucfirst($_POST['lname']);
+            $arr['course'] = strtoupper($_POST['course']);
+            $arr['section'] = strtoupper($_POST['section']);
+            $arr['year'] = $_POST['year'];
+
+            $data = $student->where($arr);
+
+            if(!empty($data)){
+                  
+                  $_SESSION['alert_unsuccess_student']="d-show";
+                  $_SESSION['message']="The Student attempting to update is already exist.";
+        
+               }else{
+                  $course = new Course();
+
+                  $var['year'] = $_POST['year'];
+                  $var['acronym'] = $_POST['course'];
+                  $var['section'] = $_POST['section'];
+
+                  $data = $course->where($var);
+
+                  if(!empty($data)){
+                        $data = $student->update($id,$arr);
+                        $_SESSION['alert_success_student']="d-show";
+                        $_SESSION['message']="Successfully update the Student.";
+                  }else{
+                        $_SESSION['alert_unsuccess_student']="d-show";
+                        $_SESSION['message']="Unsuccessfully updated. The YEAR, SECTION and COURSE does not exist.";
+                  }
+
+            }
+            
+        }
+  }
+
+
 }
