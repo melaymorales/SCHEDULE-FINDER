@@ -145,7 +145,16 @@ class Model extends Database
     }
 
    
-    public function delete($id, $column= 'id'){
+    public function delete_course($id, $column= 'id'){
+        $data[$column] = $id;
+        $query = "delete from $this->table where $column = :$column";
+
+        $this->query($query, $data);
+
+        return false;
+    }
+
+    public function delete($id, $column='row'){
         $data[$column] = $id;
         $query = "delete from $this->table where $column = :$column";
 

@@ -19,6 +19,7 @@ class Admin extends Controller{
       $this->register();
       $this->import();
       $this->update();
+      $this->delete();
       
       
       $course = new Course();
@@ -90,10 +91,6 @@ class Admin extends Controller{
      
 
     }
-
-//     private function display(){
-     
-//     }
 
     private function register(){
 
@@ -358,22 +355,13 @@ class Admin extends Controller{
                         if($_POST['import'] == "option1"){
                          
                         $exist = $teacher->where($teacher_data);
-                        // $query=" SELECT * FROM `teacher-tbl` WHERE `id`='$id'";
-                        // $result=mysqli_query($con,$query);
-                        // $exist =  mysqli_num_rows($result);
                               
                               if(empty($exist)){
                                     $teacher_data['firstname']= $fname;
                                     $teacher_data['lastname']= $lname;
                                     $teacher->insert($teacher_data);
                               }
-                              // if($exist > 0){
-                              //             $msg = true;
-                              // }else{
-                              //             $query= "INSERT INTO `teacher-tbl`(`id`, `firstname`, `lastname`) VALUES ('$id','$fname','$lname')";
-                              //             $result=mysqli_query($con,$query);
-                              //             $msg = true;
-                              // }
+                             
 
                         }else{
                               $image= $row['3'];
@@ -381,9 +369,7 @@ class Admin extends Controller{
                               $imagename= basename($image);
                               
                               $exist = $teacher->where($teacher_data);
-                              // $query="SELECT * FROM `teacher-tbl` WHERE `id` = '$id' ";
-                              // $result = mysqli_query($con, $query);
-                              // $row_image = mysqli_fetch_array($result);
+                          
       
                         if(!empty($exist)){
                               $course = new Course();
@@ -392,11 +378,7 @@ class Admin extends Controller{
                               $teacher_image =$teacher->where($arr_image);
                               $course_image =$course->where($arr_image);
                               
-                              // $query_image="SELECT * FROM `teacher-tbl` WHERE `schedule` = '$imagename' ";
-                              // $result_image = mysqli_query($con,$query_image);
-      
-                              // $query_image_course="SELECT * FROM `course-shs-tbl` WHERE `image` = '$imageName' ";
-                              // $result_image_course = mysqli_query($con,$query_image_course);
+                     
                                     if(!empty($teacher_image) ||!empty($course_image) ){
                                           
                                           if($imagename != ""){
@@ -509,13 +491,6 @@ class Admin extends Controller{
                         $arrr['year'] = $year;
                         $arrr['section'] =$section;
                         
-
-                        // $arr_course['acronym'] =$course;
-                        // $arr_course['year'] = $year;
-                        // $arr_course['section'] =$section;
-
-
-
                         
                         $exist = $course_class->where($arrr);
                    
@@ -646,6 +621,76 @@ class Admin extends Controller{
             }
             
         }
+  }
+
+  private function delete(){
+     
+
+      if(isset($_POST['save'])){
+            $course = new Course();
+
+            $arr_id['id'] = $id = $_SESSION['id'];
+
+            $imageName ="";
+            $folderPath="../app/views/assets/img/";
+
+            $data = $course->where($arr_id);
+            $row = $data[0];
+            $imageToDelete=$row->image;
+            
+            $data = $course->delete_course($id);
+     
+            if( $imageToDelete !=""){
+                 if(file_exists($folderPath.$imageToDelete)){
+                     if(unlink($folderPath . $imageToDelete)){
+                        $arr['image'] = $imageName;
+                        $data = $course->update_course($id,$arr);
+                     }
+                  }
+            }
+
+            $_SESSION['alert_success_course']="d-show";
+            $_SESSION['message']="The Course has been successfully deleted.";
+
+      }else if(isset($_POST['save_teacher'])){
+            $teacher = new Teacher();
+
+            $imageName ="";
+            $arr_id['row'] = $id = $_SESSION['id'];
+            
+            $folderPath="../app/views/assets/img/";
+    
+            $data = $teacher->where($arr_id);
+            $row = $data[0];
+      
+            $imageToDelete = $row->image;
+
+            $teacher->delete($id);
+    
+            if( $imageToDelete !=""){
+                if(file_exists($folderPath.$imageToDelete)){
+                    if(unlink($folderPath . $imageToDelete)){
+                        $arr['image'] = $imageName;
+                        $teacher->update($id,$arr);
+                    }
+                 }
+           }
+          
+           $_SESSION['alert_success_teacher']="d-show";
+           $_SESSION['message']="The teacher has been successfully deleted.";
+
+      }else if(isset($_POST['save_student'])){
+            $student = new Student();
+            $id = $_SESSION['id'];
+
+            $data = $student->delete($id);
+
+            $_SESSION['alert_success_student']="d-show";
+            $_SESSION['message']="The student has been successfully deleted.";
+        
+        
+        }
+
   }
 
 

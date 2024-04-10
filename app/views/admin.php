@@ -805,6 +805,7 @@
     <?php include '../app/views/modals.php'; ?>
     <?php include 'partials/footer.php'; ?>
     <?php include '../app/views/ajax/edit.php'; ?>
+    <?php include '../app/views/ajax/delete.php'; ?>
 
 
 

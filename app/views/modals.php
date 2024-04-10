@@ -165,6 +165,89 @@
     </div>
 </form>
 
+<!-- MODAL FOR DELETE -->
+
+<form  method="POST">
+
+    <div class="modal fade" id="modalConfirmationDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Course / Strand</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div  class="form-body" >
+                            <p>Are you sure you want to delete? </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" name="save">Yes</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</form>
+
+<form  method="POST">
+
+    <div class="modal fade" id="modalConfirmationDel_teacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Teacher</h5>
+                </div>
+                <div class="modal-body">
+            
+                    <div  class="form-body" >
+                            <p>Are you sure you want to delete? </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" name="save_teacher">Yes</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+</form>
+
+<form  method="POST">
+
+    <div class="modal fade" id="modalConfirmationDel_student" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Teacher</h5>
+                </div>
+                <div class="modal-body">
+            
+                    <div  class="form-body" >
+                            <p>Are you sure you want to delete? </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" name="save_student">Yes</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+</form>
+
+
 <!-- PREVIEW -->
 
 <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
