@@ -21,6 +21,7 @@ class Admin extends Controller{
       $this->update();
       $this->delete();
       $this->upload();
+      $this->remove();
       
       
       $course = new Course();
@@ -775,12 +776,11 @@ class Admin extends Controller{
             }
         
             if($duplicateImage != ""){
-                echo ' <script> alert(""); window.location.href="admin.php"  </script>';
                 $_SESSION['alert_unsuccess_course']="d-show";
                 $_SESSION['message'] = "The file [".$duplicateImage."] already exist!";
             }else{
                   $_SESSION['alert_success_course']="d-show";
-                  $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"]))."has been uploaded.";
+                  $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"]))." has been uploaded.";
                
             }
 
@@ -853,6 +853,61 @@ class Admin extends Controller{
                   $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
             }
         }
+  }
+
+  private function remove(){
+      $folderPath="../app/views/assets/img/";
+
+      if(isset($_POST['course_sched'])){
+            $course = new Course();
+            $arr_id['id'] = $id =  $_SESSION['id'];
+
+            $data = $course->where($arr_id);
+            $row = $data[0];
+            $imageToDelete = $row->image;
+  
+                if(file_exists($folderPath.$imageToDelete)){
+                    if(unlink($folderPath . $imageToDelete)){
+                        $arr_image['image']="";
+                        $arr_image['date']="";
+                        $course->update_course($id,$arr_image);
+                        $_SESSION['alert_success_course'] = "d-show";
+                        $_SESSION['message'] = "The file ".$imageToDelete." has been removed successfully!";
+
+                    }else{
+                        $_SESSION['alert_unsuccess_course'] = "d-show";
+                        $_SESSION['message'] = "Something went wrong. Please try again!";
+                    }
+                
+                } 
+             
+            
+        }else if(isset($_POST['teacher_sched'])){
+            $teacher = new Teacher();
+            $arr_id['row'] = $id =  $_SESSION['id'];
+
+            $data = $teacher->where($arr_id);
+            $row = $data[0];
+            $imageToDelete =$row->image;
+        
+          
+                if(file_exists($folderPath.$imageToDelete)){
+                    if(unlink($folderPath . $imageToDelete)){
+                        $arr_image['image']="";
+                        $arr_image['date']="";
+
+                        $teacher->update($id,$arr_image);
+                        $_SESSION['alert_success_teacher'] = "d-show";
+                        $_SESSION['message'] = "The file ".$imageToDelete." has been removed successfully!";
+
+                    }else{
+                        $_SESSION['alert_unsuccess_teacher'] = "d-show";
+                        $_SESSION['message'] = "Something went wrong. Please try again!";
+                    }
+                
+                } 
+        }
+
   }
 
 }

@@ -247,6 +247,7 @@
     
 </form>
 
+
 <!-- UPLOAD SCHEDULE -->
 
 <form method="POST" enctype="multipart/form-data">
@@ -293,6 +294,61 @@
             </div>
         </div>
     </div>
+</form>
+
+<!-- CONFIRMATION OF DELETING SCHED -->
+
+<form  method="POST">
+
+    <div class="modal fade" id="modalConfirmationRemove" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">REMOVE SCHEDULE</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div  class="form-body" >
+                            <p>Are you sure you want to remove? </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" name="course_sched">Yes</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</form>
+
+<form method="POST">
+
+    <div class="modal fade" id="modalConfirmationRemove_teacher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">REMOVE SCHEDULE</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div  class="form-body" >
+                            <p>Are you sure you want to remove? </p>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" name="teacher_sched">Yes</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
 </form>
 
 

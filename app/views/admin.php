@@ -372,7 +372,7 @@
                              ?>
 
                             <tr>
-                                <td class="d-none user_id_teacher" ><?= $row->row ?></td>
+                                <td class=" d-none user_id_teacher" ><?= $row->row ?></td>
                                 <td ><?= $row->id ?></td>
                                 <td><?= $row->firstname ?></td>
                                 <td ><?= $row->lastname ?></td>
@@ -807,6 +807,7 @@
     <?php include '../app/views/ajax/edit.php'; ?>
     <?php include '../app/views/ajax/delete.php'; ?>
     <?php include '../app/views/ajax/upload.php'; ?>
+    <?php include '../app/views/ajax/remove.php'; ?>
 
 
 
