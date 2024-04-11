@@ -1,152 +1,130 @@
 <?php 
-include 'init.php';
-// function init(){
-//     include '../../core/config.php';
-//     include '../../core/functions.php';
-//     include '../../core/Database.php';
-//     include '../../core/Model.php';
-//     include '../../core/Controller.php';
-//     include '../../models/Course.php';
-//     include '../../models/Teacher.php';
-//     include '../../models/Student.php';
-// }
+
+$x="";
 
 if (isset($_POST['view_teacher'])){
+    include 'init.php';
+   
+    $teacher = new Teacher();
+
+   $name = $_POST['names'];
   
-   // $teacher = new Teacher();
+    if($name==""){
+        $current_page_teacher = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset_teacher = ($current_page_teacher - 1) * 10;
+        $data = $teacher->findAll_Page("row",$offset_teacher);
 
-   // init();
-   // $name = $_POST['names'];
-  
-    // if($name==""){
-    //     $current_page_course = isset($_GET['page']) ? $_GET['page'] : 1;
-    //     $offset_course = ($current_page_course - 1) * $limit;
-    //     $course->findAll_Page("id",$offset_course);
+    }else{
+        $data = $teacher->teacher_search($name);
+    }
 
-    // }else{
-    //     $sql = "SELECT * FROM `teacher-tbl` WHERE CONCAT(`id`,`firstname`,`lastname`) LIKE '%".$name."%' ";  
-    //     $query = mysqli_query($con,$sql);
-    // }
-
-
-    // while($row = mysqli_fetch_assoc($query))
-    // {
+    foreach($data as $row){
        
-    //     $var_btnupload="";
-    //     $var_alertupload="";
-    //        if($row['schedule'] == ""){
-    //         $var_btnupload="show";
-    //         $var_alertupload="hidden";
-    //        }else{
-    //         $var_btnupload="hidden";
-    //         $var_alertupload="show";
-    //        }
+        $var_btnupload="";
+        $var_alertupload="";
+        
+           if($row->image == ""){
+            $var_btnupload="show";
+            $var_alertupload="hidden";
+           }else{
+            $var_btnupload="hidden";
+            $var_alertupload="show";
+           }
 
-    //     $data .=  "<tr>
-    //     <td class='d-none user_id_teacher'>". $row['row']."</td>
-    //     <td >".$row['id']."</td>
-    //     <td>".$row['firstname']."</td>
-    //     <td >".$row['lastname']."</td>
+        $x .=  "<tr>
+        <td class='d-none user_id_teacher'>". $row->row."</td>
+        <td >".$row->id."</td>
+        <td>".$row->firstname."</td>
+        <td >".$row->lastname."</td>
        
-    //     <td>
-    //     <button class='btn bg-success text-white btnUpload_teacher' data-bs-toggle='modal' data-bs-target='#UploadModal_teacher'  ".$var_btnupload." id='BTNUPLOAD' >+upload</button>
+        <td>
+        <button class='btn bg-success text-white btnUpload_teacher' data-bs-toggle='modal' data-bs-target='#UploadModal_teacher'  ".$var_btnupload." id='BTNUPLOAD' >+upload</button>
                               
-    //     <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
-    //                                    <span id='filename' style='font-size:.8rem;'> ".$row['schedule']."</span><br>
-    //                                    <p style='font-size: .5rem'>".$row['date']."</p>
-    //                                    <button type='submit' class='btn-close btnRemove_teacher'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove_teacher'></button>
-    //                                </div>
+        <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
+                                       <span id='filename' style='font-size:.8rem;'> ".$row->image."</span><br>
+                                       <p style='font-size: .5rem'>".$row->date."</p>
+                                       <button type='submit' class='btn-close btnRemove_teacher'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove_teacher'></button>
+                                   </div>
         
-    //     </td>
-        
-       
+        </td>
+ 
+        <td>
+        <button class='_EditTeacher mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
+                                background-color:rgba(14, 239, 14, 0.947); color:white;'> 
+                                    <i class='fa-solid fa-pen-to-square'></i>
+                                </button>
 
+                                <button class='mx-auto btnDel_teacher' style='padding:2px 5px; border:none;border-radius:5px;
+                                    background-color:red; color:white;' class='btnDel_teacher'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_teacher' > 
+                                        <i class='fa-solid fa-trash'></i>
+                                </button>
+        </td>
+        </tr>";
+     }
 
-        
-    //     <td>
-    //     <button class='_EditTeacher mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
-    //                             background-color:rgba(14, 239, 14, 0.947); color:white;'> 
-    //                                 <i class='fa-solid fa-pen-to-square'></i>
-    //                             </button>
+}else if(isset($_POST['view_student'])){
 
-    //                             <button class='mx-auto btnDel_teacher' style='padding:2px 5px; border:none;border-radius:5px;
-    //                                 background-color:red; color:white;' class='btnDel_teacher'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_teacher' > 
-    //                                     <i class='fa-solid fa-trash'></i>
-    //                             </button>
-    //     </td>
-    //     </tr>";
-    // }
+    include 'init.php';
+    $student = new Student();
 
-}else if (isset($_POST['view_student'])){
+    $name = $_POST['names'];
+    $year=$_POST['year'];
+    $section=$_POST['section'];
 
-    // $name = $_POST['names'];
-    // $year=$_POST['year'];
-    // $section=$_POST['section'];
+    if($name == ""){
 
-    // if($name==""){
-    //     $sql = " SELECT * FROM `student-tbl`  ORDER BY `row` DESC ";  
-    //     $query = mysqli_query($con,$sql);
-    // }else if($section != "" && $name == "" && $year != ""){
-    //     $sql = "SELECT * FROM `student-tbl` WHERE `year`= '$year' AND `section` = '$section'";  
-    //     $query  = mysqli_query($con,$sql);
-    // }else if($section == "" && $name != "" && $year != ""){
-    //     $sql = "SELECT * FROM `student-tbl` WHERE CONCAT(`id`,`firstname`,`lastname`,`course`) LIKE '%".$name."%' AND `year`= '$year' ";  
-    //     $query  = mysqli_query($con,$sql);
+        $current_page_student = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset_student = ($current_page_student - 1) * 10;
+        $data = $student->findAll_Page("row",$offset_student);
+
+    }else if($section != "" && $name == "" && $year != ""){
+        $data = $student->student_section__year($year,$section);
+
+    }else if($section == "" && $name != "" && $year != ""){
+        $data = $student->student_search__section($name,$year);
     
-    // }else if($section != "" && $name != "" && $year == ""){
-    //     $sql = "SELECT * FROM `student-tbl` WHERE CONCAT(`id`,`firstname`,`lastname`,`course`) LIKE '%".$name."%' AND `section`= '$section' ";  
-    //     $query  = mysqli_query($con,$sql);
-    // }else{
-    //     $sql = "SELECT * FROM `student-tbl` WHERE CONCAT(`id`,`firstname`,`lastname`,`course`) LIKE '%".$name."%' ";  
-    //     $query = mysqli_query($con,$sql);
-    // }
+    }else if($section != "" && $name != "" && $year == ""){
+        $data = $student->student_search__section($name,$section);
+    }else{
+        $data = $student->student_search($name);
+    }
 
     // while($row = mysqli_fetch_assoc($query)){
 
     
+    foreach($data as $row){
 
-
-    // $data .=  "<tr> 
+       $x .=  "<tr> 
     
-    // <td class='d-none user_id_student'>".$row['row']."</td>
-    // <td >".$row['id']."</td>
-    // <td>".$row['firstname']."</td>
-    // <td> ".$row['lastname']."</td>
-    // <td> ".$row['course']."</td>
-    // <td> ".$row['year']."</td>
-    // <td>".$row['section']."</td>
+        <td class='d-none user_id_student'>".$row->row."</td>
+        <td >".$row->id."</td>
+        <td>".$row->firstname."</td>
+        <td> ".$row->lastname."</td>
+        <td> ".$row->course."</td>
+        <td> ".$row->year."</td>
+        <td>".$row->section."</td>
 
-    // <td>
+    <td>
 
-    // <button class='_EditStudent mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
-    // background-color:rgba(14, 239, 14, 0.947); color:white;'> 
-    //     <i class='fa-solid fa-pen-to-square'></i>
-    // </button>
+    <button class='_EditStudent mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
+    background-color:rgba(14, 239, 14, 0.947); color:white;'> 
+        <i class='fa-solid fa-pen-to-square'></i>
+    </button>
 
-    //     <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
-    //         background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
-    //             <i class='fa-solid fa-trash'></i>
-    //     </button>
-    // </td>
+        <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
+            background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
+                <i class='fa-solid fa-trash'></i>
+        </button>
+    </td>
     
-    // </tr>";
+    </tr>";
 
-    // }
-}else if($_POST['view_course']){
-
-   // init();
-        // include '../../core/config.php';
-        // include '../../core/functions.php';
-        // include '../../core/Database.php';
-        // include '../../core/Model.php';
-        // include '../../core/Controller.php';
-        // include '../../models/Course.php';
-        // include '../../models/Teacher.php';
-        // include '../../models/Student.php';
-
+     }
+}else if(isset($_POST['view_course'])){
+    include 'init.php';
 
    $course = new Course();
-   $x="";
+
    
    $name = $_POST['names'];
    $year = $_POST['year'];
@@ -158,20 +136,16 @@ if (isset($_POST['view_teacher'])){
         $data = $course->findAll_Page("id",$offset_course);
 
     }else{
-        $data = $course->course_search($name);
-        // if($name != "" &&  $year == "" ){
-          
-        // }else if($name != "" &&  $year != "" ){
-        //     $data = $course->course_search_year($name,$year);
-        // }else{
-        //     $data = $course->course_year($year);
-        // }
-           
+      
+        if($name != "" &&  $year == "" ){
+            $data = $course->course_search($name);
+        }else if($name != "" &&  $year != "" ){
+            $data = $course->course_search_year($name,$year);
+        }else{
+            $data = $course->course_year($year);
+        }    
         
     }
-
-
-
 
     foreach($data as $row){
        
@@ -231,94 +205,7 @@ echo $x;
 
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
-<script>
-$(document).ready(function(){
 
-    function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Gumawa ng debounce function para sa AJAX request
-const debouncedAjaxRequest = debounce(function(getName, getYear) {
-    $.ajax({
-        method: 'POST',
-        url: '../app/views/ajax/search.php',
-        data: {
-            view_course: true,
-            names: getName,
-            year: getYear
-        },
-        success: function(response) {
-            $("#showdata").html(response);
-        }
-    });
-}, 100); // 300 milliseconds debounce delay
-
-// Bind ng debounce function sa keyup event ng #getCourse input field
-$('#getCourse').on("keyup", function() {
-    var getName = $(this).val();
-    var getYear = document.getElementById('search').value;
-    debouncedAjaxRequest(getName, getYear);
-});
-
-
-
-
-
-    // $('#getTeacher').on("keyup", function(){
-
-    //         var getName = $(this).val();
-   
-    //         $.ajax({
-    //         method:'POST',
-    //         url:'../app/views/ajax/remove.php',
-    //         data:{
-    //             view_teacher:true,
-    //             names:getName,
-               
-    //         },
-    //         success:function(response)
-    //         {
-                
-    //             $("#showdata_teacher").html(response);
-    //         } 
-    //         });
-
-    //  });
-
-
-    //  $('#getStudent').on("keyup", function(){
-    //         var getName = $(this).val();
-    //         var getyear= document.getElementById('search_year').value;
-    //         var getsection= document.getElementById('search_section').value;
-            
-    //         $.ajax({
-    //         method:'POST',
-    //         url:'../app/views/ajax/remove.php',
-    //         data:{
-    //             view_student:true,
-    //             names:getName,
-    //             year: getyear,
-    //             section:getsection
-               
-    //         },
-    //         success:function(response)
-    //         {
-    //             $("#showdata_student").html(response);
-    //         } 
-    //         });
-    //     });
-
-});
-</script>
 
 <script>
     $(document).ready(function(){
@@ -473,5 +360,94 @@ $(document).ready(function(){
 
 });
 
+</script>
+
+<script>
+$(document).ready(function(){
+
+        function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+// Gumawa ng debounce function para sa AJAX request
+    const debouncedAjaxRequest = debounce(function(getName, getYear) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                view_course: true,
+                names: getName,
+                year: getYear
+            },
+            success: function(response) {
+                $("#showdata").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#getCourse').on("keyup", function() {
+        var getName = $(this).val();
+        var getYear = document.getElementById('search').value;
+        debouncedAjaxRequest(getName, getYear);
+    });
+
+    const debouncedAjaxRequest_teacher = debounce(function(getName, getYear) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                view_teacher:true,
+                names:getName,
+            },
+            success: function(response) {
+                $("#showdata_teacher").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#getTeacher').on("keyup", function() {
+        var getName = $(this).val();
+        debouncedAjaxRequest_teacher(getName);
+    });
+
+    const debouncedAjaxRequest_student = debounce(function(getName,getyear,getsection) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                view_student:true,
+                names:getName,
+                year: getyear,
+                section:getsection
+            },
+            success: function(response) {
+                $("#showdata_student").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#getStudent').on("keyup", function() {
+
+            var getName = $(this).val();
+            var getyear= document.getElementById('search_year').value;
+            var getsection= document.getElementById('search_section').value;
+
+            debouncedAjaxRequest_student(getName,getyear,getsection);
+    });
+
+
+
+});
 </script>
 

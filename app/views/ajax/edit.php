@@ -1,9 +1,10 @@
 
 <?php
 
-include 'init.php';
+
 
 if(isset($_POST['click_view_btn'])){
+    include 'init.php';
 
   $arr['id'] = $_POST['user_id'];
 
@@ -79,7 +80,7 @@ if(isset($_POST['click_view_btn'])){
     }
 
     }else if(isset($_POST['teacher'])){
-      init();
+        include 'init.php';
       $teacher = new Teacher();
       $arr['row'] = $_POST['user_id'];
       $data= $teacher->where($arr);
@@ -99,24 +100,24 @@ if(isset($_POST['click_view_btn'])){
       </div>
 
       <div class="mb-3">
-          <label for="fname">
+          <label for="firstname">
               Firstname
           </label>
-          <input name="fname" type="text" class="form-control"  value ="'.$row->firstname.'" required>
+          <input name="firstname" type="text" class="form-control"  value ="'.$row->firstname.'" required>
       </div>
 
       <div class="mb-3">
-          <label for="lname">
+          <label for="lastname">
               Lastname
           </label>
-          <input name="lname" type="text" class="form-control"  value ="'.$row->lastname.'" required>
+          <input name="lastname" type="text" class="form-control"  value ="'.$row->lastname.'" required>
       </div>
 
       </div>
       ';
   }
 }else if(isset($_POST['student'])){
-  init();
+    include 'init.php';
   $student = new Student();
   $course = new Course();
   $g11="";  $g12="";  $c1=""; $c2="";  $c3="";  $c4="";

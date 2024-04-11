@@ -54,7 +54,7 @@
                         <div class="row"  >
                             <div class="col-12 col-md-5 " >
                                 <div>
-                                    <input type="text" class="input-control __border ps-3"  placeholder="Search Course/SHS and Acronym" id="getCourse" oninput="removePTag()" style="font-size:1rem !important;padding:5px !important;width:100%;">
+                                    <input type="text" class="input-control __border ps-3"  placeholder="Search Course/SHS and Acronym" id="getCourse" style="font-size:1rem !important;padding:5px !important;width:100%;">
                                 </div>
                              </div>
 
@@ -284,7 +284,7 @@
                             <div class="col-12 col-md-6">
                                 <div>
                                     
-                                    <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname" id="getTeacher" oninput="removePTag_teacher()" style="font-size:1rem !important;padding:5px !important;width:90%;">
+                                    <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname" id="getTeacher"  style="font-size:1rem !important;padding:5px !important;width:90%;">
                                    
                                 </div>
                              </div>
@@ -482,7 +482,7 @@
                                 <div>
                                    
                                     <div>
-                                        <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname, Course" id="getStudent" oninput="removePTag_student()" style="font-size:1rem !important;padding:5px !important;width:100%;">
+                                        <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname, Course" id="getStudent" style="font-size:1rem !important;padding:5px !important;width:100%;">
                                     </div>
                                    
                                 </div>

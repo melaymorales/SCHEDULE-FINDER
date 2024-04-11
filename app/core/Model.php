@@ -95,6 +95,85 @@ class Model extends Database
         return  $result;
     }
 
+    public function teacher_search($getinput){
+
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`, `lastname`) LIKE :searchTerm";
+        $data = [':searchTerm' => "%$getinput%"];
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return  $result;
+    }
+
+    public function student_search($getinput){
+
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`, `lastname`,`course`) LIKE :searchTerm";
+        $data = [':searchTerm' => "%$getinput%"];
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return  $result;
+    }
+
+    public function student_search__section($getinput,$getsection){
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `section` = :sectionTerm";
+        $data = [
+            ':searchTerm' => "%$getinput%",
+            ':sectionTerm' => $getsection ,
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+    public function student_search__year($getinput,$getyear){
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`,`lastname`,`course`) LIKE :searchTerm AND `year` = :yearTerm";
+        $data = [
+            ':searchTerm' => "%$getinput%",
+            ':yearTerm' => $getyear,
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+
+    public function student_section__year($getyear,$getsection){
+        $query = "SELECT * FROM $this->table WHERE `year` = :yearTerm AND `section` = sectionTerm";
+        $data = [
+            ':yearTerm' => $getyear,
+            ':sectionTerm' => $getsection,
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+
     public function search_course_year($getinput,$getyear){
         $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `year` LIKE :yearTerm";
         $data = [
