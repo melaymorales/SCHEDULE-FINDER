@@ -81,6 +81,52 @@ class Model extends Database
         return false;
     }
 
+    public function course_search($getinput){
+
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm";
+        $data = [':searchTerm' => "%$getinput%"];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return  $result;
+    }
+
+    public function search_course_year($getinput,$getyear){
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `year` LIKE :yearTerm";
+        $data = [
+            ':searchTerm' => "%$getinput%",
+            ':yearTerm' => "%$getyear%",
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+    public function course_year($getyear){
+        $query = "SELECT * FROM $this->table WHERE `year` = :yearTerm";
+        $data = [':yearTerm' => $getyear ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+
     public function insert($data){
         $newValues="";
        // show($data);

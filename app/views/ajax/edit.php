@@ -1,20 +1,10 @@
 
 <?php
 
-function init(){
-  require '../../core/config.php';
-  require '../../core/functions.php';
-  require '../../core/Database.php';
-  require '../../core/Model.php';
-  require '../../core/Controller.php';
-  require '../../models/Course.php';
-  require '../../models/Teacher.php';
-  require '../../models/Student.php';
-}
-
+include 'init.php';
 
 if(isset($_POST['click_view_btn'])){
-  init();
+
   $arr['id'] = $_POST['user_id'];
 
    $g11="";$g12="";$g1="";$g2="";$g3="";$g4="";
@@ -241,96 +231,11 @@ if(isset($_POST['click_view_btn'])){
 echo "</select>
 </div>";
 
+
+
 }
+
+
 
 ?>
 
-
-<script>
-    $(document).ready(function(){
-      
-        $('.btnEdit').click(function(e){
-        
-            e.preventDefault();
-         
-            var user_id= $(this).closest('tr').find('.user_id').text();
-
-            $.ajax({
-
-                method:"POST",
-                url:'../app/views/ajax/edit.php',
-               
-                data:{
-                   'click_view_btn':true,
-                    'user_id':user_id,
-                },
-                success: function(response){
-                  
-                   event.preventDefault();
-                   $('#EditModal').modal('toggle');
-                  $('.view_user_data').html(response);
-
-             
-                },
-                error: function(xhr, status, error){
-                console.log(xhr.responseText);
-            }
-            });
-
-            
-        });
-
-        $('._EditTeacher').click(function(e){
-            e.preventDefault();
-
-            var user_id_teacher= $(this).closest('tr').find('.user_id_teacher').text();
-
-            $.ajax({
-
-                method:"POST",
-                url:'../app/views/ajax/edit.php',
-                data:{
-                    'teacher':true,
-                    'user_id':user_id_teacher,
-                },
-                success: function(response){
-                   
-                    event.preventDefault();
-                    $('.view_user_data').html(response);
-                    $('#modalTeacher').modal('toggle');
-                },
-                error: function(xhr, status, error){
-                console.log(xhr.responseText);
-            }
-            });
-        });
-
-        $('._EditStudent').click(function(e){
-            e.preventDefault();
-
-            var user_id_student= $(this).closest('tr').find('.user_id_student').text();
-
-            $.ajax({
-
-                method:"POST",
-                url:'../app/views/ajax/edit.php',
-                data:{
-                    'student':true,
-                    'user_id':user_id_student,
-                },
-                success: function(response){
-                    console.log(response);
-                    //event.preventDefault();
-                    $('.view_user_data').html(response);
-                    $('#modalStudent').modal('toggle');
-              
-                },
-                error: function(xhr, status, error){
-                console.log(xhr.responseText);
-            }
-            });
-        });
-
-        
-    });
-</script>

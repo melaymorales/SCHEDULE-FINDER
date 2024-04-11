@@ -804,13 +804,17 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <?php include '../app/views/modals.php'; ?>
     <?php include 'partials/footer.php'; ?>
+    
+    <?php include '../app/views/ajax/search.php'; ?>
     <?php include '../app/views/ajax/edit.php'; ?>
+
     <?php include '../app/views/ajax/delete.php'; ?>
     <?php include '../app/views/ajax/upload.php'; ?>
     <?php include '../app/views/ajax/remove.php'; ?>
+    
 
 
-
+                            
 
 
 

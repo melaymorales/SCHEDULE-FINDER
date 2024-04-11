@@ -15,10 +15,10 @@ class Database{
 
         if($check){
             $result =$stm->fetchAll(PDO::FETCH_OBJ);
-
-            if(is_array($result) && count($result) > 0){
-                return $result;
-            }
+            return $result;
+            // if(is_array($result) && count($result) > 0){
+            //     return $result;
+            // }
         }
         return false;
     }
