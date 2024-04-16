@@ -11,6 +11,17 @@ class Model extends Database
         }
     }
 
+    public function adminAccount(){
+        // $query = "select * from users";
+        $query = "select * from $this->table ";
+        $result =$this->query($query);
+
+        if($result){
+            return $result;
+        }
+        return false;
+    }
+
     public function findAll(){
         // $query = "select * from users";
         $query = "select * from $this->table ORDER BY id DESC";
@@ -122,7 +133,7 @@ class Model extends Database
     }
 
     public function student_search__section($getinput,$getsection){
-        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `section` = :sectionTerm";
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`, `lastname`,`course`) LIKE :searchTerm AND `section` = :sectionTerm";
         $data = [
             ':searchTerm' => "%$getinput%",
             ':sectionTerm' => $getsection ,
@@ -152,15 +163,37 @@ class Model extends Database
         }
 
         return false;
-
     }
 
 
+
+
+    public function student_search_section__year($getinput,$getyear,$getSection){
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`,`lastname`,`course`) LIKE :searchTerm AND `year` = :yearTerm AND `section` = :sectionTerm";
+        $data = [
+            ':searchTerm' => "%$getinput%",
+            ':yearTerm' => $getyear,
+            ':sectionTerm' =>  $getSection
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+
+    }
+
+    
+
+
     public function student_section__year($getyear,$getsection){
-        $query = "SELECT * FROM $this->table WHERE `year` = :yearTerm AND `section` = sectionTerm";
+        $query = "SELECT * FROM $this->table WHERE `year` = :yearTerm AND `section` = :sectionTerm";
         $data = [
             ':yearTerm' => $getyear,
-            ':sectionTerm' => $getsection,
+            ':sectionTerm' => $getsection
         ];
 
         $result = $this->query($query, $data);
@@ -175,10 +208,10 @@ class Model extends Database
 
 
     public function search_course_year($getinput,$getyear){
-        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `year` LIKE :yearTerm";
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `year` = :yearTerm";
         $data = [
             ':searchTerm' => "%$getinput%",
-            ':yearTerm' => "%$getyear%",
+            ':yearTerm' => $getyear,
         ];
 
         $result = $this->query($query, $data);
@@ -229,6 +262,26 @@ class Model extends Database
     }
 
     public function update_course($id, $data, $column = 'id'){
+        $keys = array_keys($data);
+        $query = "update $this->table set ";
+
+        foreach ($keys as $key){
+            $query .= $key . " = :" . $key .", ";
+        }
+        
+
+        $query = trim($query,", ");
+        $query .= " where $column = :$column";
+
+      //  show($query);
+
+        $data[$column] = $id;
+        $this->query($query, $data);
+
+        return false;
+    }
+
+    public function update_account($id, $data, $column = 'username'){
         $keys = array_keys($data);
         $query = "update $this->table set ";
 

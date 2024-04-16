@@ -85,41 +85,46 @@ if (isset($_POST['view_teacher'])){
     
     }else if($section != "" && $name != "" && $year == ""){
         $data = $student->student_search__section($name,$section);
+
+    }else if($section != "" && $name != "" && $year != ""){
+       $data= $student->student_search_section__year($name,$year, $section );
     }else{
         $data = $student->student_search($name);
     }
 
     // while($row = mysqli_fetch_assoc($query)){
 
-    
-    foreach($data as $row){
+    if(!empty($data)){
 
-       $x .=  "<tr> 
-    
-        <td class='d-none user_id_student'>".$row->row."</td>
-        <td >".$row->id."</td>
-        <td>".$row->firstname."</td>
-        <td> ".$row->lastname."</td>
-        <td> ".$row->course."</td>
-        <td> ".$row->year."</td>
-        <td>".$row->section."</td>
+        foreach($data as $row){
 
-    <td>
+        $x .=  "<tr> 
+        
+            <td class='d-none user_id_student'>".$row->row."</td>
+            <td >".$row->id."</td>
+            <td>".$row->firstname."</td>
+            <td> ".$row->lastname."</td>
+            <td> ".$row->course."</td>
+            <td> ".$row->year."</td>
+            <td>".$row->section."</td>
 
-    <button class='_EditStudent mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
-    background-color:rgba(14, 239, 14, 0.947); color:white;'> 
-        <i class='fa-solid fa-pen-to-square'></i>
-    </button>
+        <td>
 
-        <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
-            background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
-                <i class='fa-solid fa-trash'></i>
+        <button class='_EditStudent mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
+        background-color:rgba(14, 239, 14, 0.947); color:white;'> 
+            <i class='fa-solid fa-pen-to-square'></i>
         </button>
-    </td>
-    
-    </tr>";
 
-     }
+            <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
+                background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
+                    <i class='fa-solid fa-trash'></i>
+            </button>
+        </td>
+        
+        </tr>";
+
+        }
+    }
 }else if(isset($_POST['view_course'])){
     include 'init.php';
 
@@ -190,14 +195,216 @@ if (isset($_POST['view_teacher'])){
         </tr>";
     }
 
- 
-
-
 }
 
 echo $x;
 
 
+    if(isset($_POST['course_year'])){
+
+        include 'init.php';
+
+
+        $course = new Course();
+        $selectedItem = $_POST['item'];
+        $name= $_POST['course'];
+
+        if($selectedItem == "" && $name == ""){
+           
+            $current_page_course = isset($_GET['page']) ? $_GET['page'] : 1;
+            $offset_course = ($current_page_course - 1) * 10;
+            $data = $course->findAll_Page("id",$offset_course);
+
+        }else if($selectedItem != "" && $name != ""){
+            $data = $course->search_course_year($name,$selectedItem);
+        }
+        else if($selectedItem == "" && $name != ""){
+            $data = $course->course_search($name);
+        }
+        else{
+            
+            $arr['year'] = $selectedItem;
+            $data = $course->where($arr);
+        }
+
+        foreach($data as $row){
+
+            $var_btnupload="";
+            $var_alertupload="";
+    
+                if($row->image == ""){
+                    $var_btnupload="show";
+                    $var_alertupload="hidden";
+                }else{
+                    $var_btnupload="hidden";
+                    $var_alertupload="show";
+                }
+    
+                //    $course_student = $row['acronym'];
+                //    $year_student = $row['year'];
+                //    $section_student = $row['section'];
+                //    $query_student= "SELECT * FROM `student-tbl` WHERE `course`= '$course_student' AND `section`= '$section_student' AND `year` = '$year_student' ";
+                //    $result_student= mysqli_query($con,$query_student);
+                //    $number_student = mysqli_num_rows($result_student);
+    
+                echo "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
+                 <td></td>
+                <td>
+                
+                <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
+                                       
+                <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
+                    <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
+                    <p style='font-size: .5rem'>".$row->date."</p>
+                    <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
+                </div>
+                
+                </td>
+                    <td>
+                    <button class='btnEdit' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;background-color:rgba(14, 239, 14, 0.947); color:white;'> <i class='fa-solid fa-pen-to-square'></i> </button>
+                    <button style='padding:2px 5px; border:none;border-radius:5px;background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel' class='btnDel'><i class='fa-solid fa-trash'></i></button>
+                    </td>
+                    </tr>";
+            }
+       
+    }else if(isset($_POST['student_year'])){
+        include 'init.php';
+
+        $student = new Student();
+
+        $selectedItem = $_POST['item'];
+        $course = $_POST['course'];
+        $section = $_POST['section'];
+
+    if($selectedItem == "" && $course == "" && $section==""){
+
+        $current_page_student= isset($_GET['page_student']) ? $_GET['page_student'] : 1;
+        $offset_student = ($current_page_student - 1) * 10;
+        $data = $student->findAll_Page("row",$offset_student);
+
+
+    }else if($selectedItem != "" && $course != "" && $section !=""){
+        $data = student_search_section__year($course,$selectedItem,$section);
+
+    }else if($selectedItem != "" && $course == ""  && $section == ""){
+
+       $arr['year'] = $selectedItem;
+       $data = $student->where($arr);
+
+    }else if($selectedItem != "" && $course == "" && $section != ""){
+
+         $data = $student->student_section__year($selectedItem,$section);
+
+    }else if($selectedItem == "" && $course != ""  && $section != ""){
+
+        $data = $student->student_search__section($course,$section);
+
+    }else if($selectedItem == "" && $course != "" && $section == ""){
+        $data = $student->student_search($course);
+
+    }else if($selectedItem != "" && $course != ""  && $section == ""){
+        $data = $student->student_search__year($course,$selectedItem);
+
+    }
+
+    if(!empty($data)){
+        foreach($data as $row){
+
+            echo "<tr> 
+            
+            <td class='d-none user_id_student'>".$row->row."</td>
+            <td >".$row->id."</td>
+            <td>".$row->firstname."</td>
+            <td> ".$row->lastname."</td>
+            <td> ".$row->course."</td>
+            <td> ".$row->year."</td>
+            <td>".$row->section."</td>
+
+            <td>
+                <button class='_EditStudent mx-auto'  style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
+                background-color:rgba(14, 239, 14, 0.947); color:white;'> 
+                    <i class='fa-solid fa-pen-to-square'></i>
+                </button>
+
+                <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
+                    background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
+                        <i class='fa-solid fa-trash'></i>
+                </button>
+            </td>
+            
+            </tr>";
+        
+        }
+
+    }
+}else if(isset($_POST['student_section'])){
+    include 'init.php';
+
+    $student = new Student();
+
+    $year = $_POST['year'];
+    $course = $_POST['course'];
+    $selectedItem = $_POST['item'];
+
+
+    if($selectedItem == "" && $course == "" && $year==""){
+
+        $current_page_student= isset($_GET['page_student']) ? $_GET['page_student'] : 1;
+        $offset_student = ($current_page_student - 1) * 10;
+        $data = $student->findAll_Page("row",$offset_student);
+
+    }else if($selectedItem != "" && $course != "" && $year !=""){
+        $data = $student->student_search_section__year($course,$year, $selectedItem );
+
+    }else if($selectedItem != "" && $course == ""  && $year == ""){
+        $arr['section'] = $selectedItem;
+        $data = $student->where($arr);
+
+    }else if($selectedItem != "" && $course == "" && $year != ""){
+        $data = $student->student_section__year($year,$selectedItem);
+ 
+
+    }else if($selectedItem == "" && $course != ""  && $year != ""){
+        $data = $student->search_course_year($course,$year);
+
+    }else if($selectedItem == "" && $course != "" && $year == ""){
+        $data->student_search($course);
+
+    }else if($selectedItem != "" && $course != ""  && $year == ""){
+        $data = $student->student_search__section($course,$selectedItem);
+
+    }
+
+    if(!empty($data)){
+
+       foreach($data as $row){
+
+            echo "<tr> 
+        
+        <td class='d-none user_id_student'>".$row->row."</td>
+        <td >".$row->id."</td>
+        <td>".$row->firstname."</td>
+        <td> ".$row->lastname."</td>
+        <td> ".$row->course."</td>
+        <td> ".$row->year."</td>
+        <td>".$row->section."</td>
+
+        <td>
+            <button class='_EditStudent mx-auto' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;
+            background-color:rgba(14, 239, 14, 0.947); color:white;'> 
+                <i class='fa-solid fa-pen-to-square'></i>
+            </button>
+
+            <button class='btnDel_student' style='padding:2px 5px; border:none;border-radius:5px;
+                background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel_student' > 
+                    <i class='fa-solid fa-trash'></i>
+            </button>
+        </td>
+        
+        </tr>";
+        }
+    }
+}
 
 ?>
 
@@ -296,6 +503,7 @@ echo $x;
     });
 </script>
 
+
 <script>
 $(document).ready(function(){
 
@@ -361,6 +569,104 @@ $(document).ready(function(){
 });
 
 </script>
+
+<script>
+$(document).ready(function(){
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+
+    const debouncedAjaxRequest_year = debounce(function(selectedItem, getcourse) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                course_year:true,
+                item: selectedItem,
+                course: getcourse
+            },
+            success: function(response) {
+                $("#showdata").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#course_year').on("change", function() {
+        var selectedItem = $(this).val();
+        var getcourse = document.getElementById('getCourse').value;
+        debouncedAjaxRequest_year(selectedItem, getcourse);
+    });
+
+    const debouncedAjaxRequest_student_year = debounce(function(selectedItem,getcourse,getsection) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                student_year: true,
+                item: selectedItem,
+                course: getcourse,
+                section: getsection
+            },
+            success: function(response) {
+                $("#showdata_student").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#student_year').on("change", function() {
+            var selectedItem = $(this).val();
+            var getcourse = document.getElementById('getStudent').value;
+            var getsection= document.getElementById('student_section').value;
+        debouncedAjaxRequest_student_year(selectedItem,getcourse,getsection);
+    });
+
+    const debouncedAjaxRequest_student_section = debounce(function(selectedItem,getcourse,getyear) {
+        $.ajax({
+            method: 'POST',
+            url: '../app/views/ajax/search.php',
+            data: {
+                student_section: true,
+                item: selectedItem,
+                course: getcourse,
+                year: getyear
+                
+            },
+            success: function(response) {
+                $("#showdata_student").html(response);
+            }
+        });
+    }, 0); // 300 milliseconds debounce delay
+
+    // Bind ng debounce function sa keyup event ng #getCourse input field
+    $('#student_section').on("change", function() {
+
+            var selectedItem = $(this).val();
+            var getcourse = document.getElementById('getStudent').value;
+            var getyear= document.getElementById('student_year').value;
+
+
+        debouncedAjaxRequest_student_section(selectedItem,getcourse,getyear);
+    });
+  
+
+ });
+
+
+
+</script>
+
 
 <script>
 $(document).ready(function(){
@@ -434,14 +740,13 @@ $(document).ready(function(){
                 $("#showdata_student").html(response);
             }
         });
-    }, 0); // 300 milliseconds debounce delay
+    }, 300); // 300 milliseconds debounce delay
 
-    // Bind ng debounce function sa keyup event ng #getCourse input field
     $('#getStudent').on("keyup", function() {
-
+ 
             var getName = $(this).val();
-            var getyear= document.getElementById('search_year').value;
-            var getsection= document.getElementById('search_section').value;
+            var getyear= document.getElementById('student_year').value;
+            var getsection= document.getElementById('student_section').value;
 
             debouncedAjaxRequest_student(getName,getyear,getsection);
     });

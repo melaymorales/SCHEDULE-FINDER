@@ -3,8 +3,8 @@
  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
  session_start();
- $_SESSION['alert_success_course']= $_SESSION['alert_success_teacher'] = $_SESSION['alert_success_student']= "d-none";
- $_SESSION['alert_unsuccess_course']=$_SESSION['alert_unsuccess_teacher'] = $_SESSION['alert_unsuccess_student'] = "d-none";
+ $_SESSION['alert_success_course']= $_SESSION['alert_success_teacher'] = $_SESSION['alert_success_student'] = $_SESSION['alert_success_password']="d-none";
+ $_SESSION['alert_unsuccess_course']=$_SESSION['alert_unsuccess_teacher'] = $_SESSION['alert_unsuccess_student'] = $_SESSION['alert_unsuccess_password']= "d-none";
  $_SESSION['message']="";
 
 
@@ -22,6 +22,8 @@ class Admin extends Controller{
       $this->delete();
       $this->upload();
       $this->remove();
+      $this->changepassword();
+
       
       
       $course = new Course();
@@ -85,12 +87,11 @@ class Admin extends Controller{
             'alert_unsuccess_teacher' =>  $_SESSION['alert_unsuccess_teacher'],
             'alert_success_student' =>  $_SESSION['alert_success_student'],
             'alert_unsuccess_student' =>  $_SESSION['alert_unsuccess_student'],
+            'alert_success_password' =>  $_SESSION['alert_success_password'],
+            'alert_unsuccess_password' =>  $_SESSION['alert_unsuccess_password'],
             'message' =>  $_SESSION['message']
      ]);
 
-    
-
-     
 
     }
 
@@ -910,4 +911,61 @@ class Admin extends Controller{
 
   }
 
+
+  private function changepassword(){
+
+      $account = new Account();
+
+      if(isset($_POST['updatePass'])){
+
+      
+
+            $oldpass= $_POST['oldpass'];
+            $newpass= $_POST['newpass'];
+            $repass= $_POST['repass'];
+
+            $data = $account->adminAccount();
+            $row = $data[0];
+
+            if($row->password == $oldpass){
+        
+                if ($this->validatePassword($newpass)) {
+                    if($newpass != $repass){
+                        $_SESSION['alert_unsuccess_password'] = "show";
+                        $_SESSION['message']="Password mismatch. Please make sure the new password and retype password fields match.";
+                    }else{
+                        $arr['password'] = $newpass;
+                        $account->update_account("admin",$arr);
+                        $_SESSION['alert_success_password'] = "show";
+                        $_SESSION['message']="Password updated. You can now log in using your new password.";
+
+                    }
+        
+                }else{
+                  $_SESSION['alert_unsuccess_password'] = "show";
+                  $_SESSION['message']="Password must be 8 or more characters and contain at least 1 number,special character, and uppercase letter.";
+                }
+            }else{
+            
+                  $_SESSION['alert_unsuccess_password'] = "show";
+                  $_SESSION['message']="Invalid old password. Please enter the correct old password.";
+
+            }
+ 
+      }
+
+  }
+
+  private function validatePassword($password) {
+      $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/';
+  
+      if (preg_match($pattern, $password)) {
+          return true;
+      } else {
+          return false; 
+      }
+  }
+  
+
 }
+

@@ -62,7 +62,7 @@
                             <div class="col-12 col-md-7  d-flex">
                             <div class=" ms-auto mt-5 mt-md-0 mb-0 " >
 
-                                    <select id="search" class="btn text-primary me-2" style="border:1px solid; font-weight:bold;" >
+                                    <select id="course_year" class="btn text-primary me-2" style="border:1px solid; font-weight:bold;" >
                                         <option value="">Year</option>
                                         <option value="grade 11">Grade 11</option>
                                         <option value="grade 12">Grade 12</option>
@@ -452,6 +452,7 @@
 
             <hr class="m-0" />
     </div>
+
   <!-- ################################### STUDENT ##################################### -->
     <div>      
        
@@ -490,7 +491,7 @@
                             <div class="col-12 col-md-7  d-flex">
                                 <div class="ms-md-auto me-md-4 mt-5 mt-md-0 mb-0 " >
 
-                                <select id="search_year" class="btn text-primary me-2 " style="border:1px solid; font-weight:bold;" >
+                                <select id="student_year" class="btn text-primary me-2 " style="border:1px solid; font-weight:bold;" >
                                         <option value="">Year</option>
                                         <option value="grade 11">Grade 11</option>
                                         <option value="grade 12">Grade 12</option>
@@ -500,22 +501,19 @@
                                         <option value="4th">4th</option>
                                     </select>
 
-                                    <select id="search_section" class="btn text-primary me-2" style="border:1px solid; font-weight:bold;text-align:left;" >
+                                    <select id="student_section" class="btn text-primary me-2" style="border:1px solid; font-weight:bold;text-align:left;" >
                                         <option value="">Section</option>
                                         <?php 
 
-                                            
-                                            // $section=array();
-                                            // $section_combobox= "SELECT * FROM `course-shs-tbl` ";
-                                            // $section_result = mysqli_query($con,$section_combobox);
+                                            $section=array();
 
-                                            // while($row_section= mysqli_fetch_array($section_result)){
-                                            //      if (!in_array($row_section['section'],$section)){
-                                            //         $section[]=$row_section['section'];
-                                            //          echo ' <option value="'.$row_section['section'].'">'.$row_section['section'].'</option>';
+                                            foreach($allCourse as $row){
 
-                                            //  }
-                                            //  }
+                                                 if (!in_array($row->section,$section)){
+                                                    $section[]=$row->section;
+                                                     echo ' <option value="'.$row->section.'">'.$row->section.'</option>';
+                                                 }
+                                             }
                                         ?>
                                         
                                     </select>
@@ -741,7 +739,13 @@
     </div> 
     <div>
 
-            <form action="changepassword.php" method="POST">
+  
+        <form  method="POST">
+                            
+
+      
+
+
             <section class="resume-section " id="setting" >
 
            
@@ -751,6 +755,17 @@
                         |
                         <span class="text-dark">CHANGE PASSWORD</span>
                     </h1>
+
+                <div class=" <?php echo $alert_success_password;  ?> alert alert-success alert-dismissible fade show mt-5" role="alert">
+                    <?php echo $message; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class=" <?php echo $alert_unsuccess_password;  ?> alert alert-danger alert-dismissible fade show mt-5" role="alert">
+                    <?php echo $message; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
                     <div class="form-body  mt-5" >
                         <div class="mb-5">
                             <label for="">Old Password</label>
@@ -767,13 +782,9 @@
                             <input type="password" class="form-control" placeholder="" name="repass">
                         </div>
                             
-                        <div class="alert alert-danger alert-dismissible fade  <?php// echo  $_SESSION['Invalid_Password'] ?>" role="alert">
-                            <?php //echo $_SESSION['message']; ?>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
 
                         <div style="width: 30%; " class="mx-auto mt-0">
-                            <input type="submit" name="btnlogin"class="form-control bg-primary text-white p-2" value="UPDATE">
+                            <input type="submit" name="updatePass" class="form-control bg-primary text-white p-2 mt-5" value="UPDATE">
                         </div>
                    
                         </div>
@@ -786,22 +797,11 @@
            
         </div>
     </div>
-        <!-- MESSAGE BOX -->
-
-       
-
  
-        <!-- Bootstrap core JS-->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> -->
-        <!-- Core theme JS-->
-
-
 
     </body>
     
-     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+   
     <?php include '../app/views/modals.php'; ?>
     <?php include 'partials/footer.php'; ?>
     
@@ -897,411 +897,4 @@
 
 
 // </script>
-
- <script>
-//     $(document).ready(function(){
-
-//         $('.btnEdit').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id').text();
-
-//             $.ajax({
-
-//                 method:"POST",
-//                 url:"crud/edit.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-//                     // console.log(response);
-//                     // event.preventDefault();
-//                     // jQuery.noConflict();
-//                     // $('.view_user_data').html(response);
-//                     // $(window).on('load',function () {
-//                     //     $('#EditModal').modal('toggle');
-//                     // });
-
-//                     // console.log(response);
-//                     event.preventDefault();
-//                 //    jQuery.noConflict();
-//                    $('#EditModal').modal('toggle');
-//                    $('.view_user_data').html(response);
-
-//                 //    console.log(response);
-//                 //    event.preventDefault();
-//                 //    jQuery.noConflict();
-                  
-//                 //    $('.view_user_data').html(response);
-//                 //    $('#EditModal').modal('toggle');
-//                 //    $(window).on('load',function () {
-//                 //         $('#EditModal').modal('toggle');
-//                 //     });
-//                  //  $('#EditModal').modal('toggle');
-                   
-//                     // document.getElementById('page_section').innerHTML = "hello";
-//                     // console.log("hello");
-                   
-//                    // $('#EditModal').modal('toggle');
-//                     // console.log(response);
-//                     //  event.preventDefault();
-//                     // jQuery.noConflict();
-//                 },
-//                 error: function(xhr, status, error){
-//                 console.log(xhr.responseText);
-//             }
-//             });
-
-            
-//         });
-
-//         $('._EditTeacher').click(function(e){
-//             e.preventDefault();
-
-//             var user_id_teacher= $(this).closest('tr').find('.user_id_teacher').text();
-
-//             $.ajax({
-
-//                 method:"POST",
-//                 url:"crud/edit.php",
-//                 data:{
-//                     'teacher':true,
-//                     'user_id':user_id_teacher,
-//                 },
-//                 success: function(response){
-                   
-//                     event.preventDefault();
-//                     $('.view_user_data').html(response);
-//                     $('#modalTeacher').modal('toggle');
-//                 },
-//                 error: function(xhr, status, error){
-//                 console.log(xhr.responseText);
-//             }
-//             });
-//         });
-
-//         $('._EditStudent').click(function(e){
-//             e.preventDefault();
-
-//             var user_id_student= $(this).closest('tr').find('.user_id_student').text();
-
-//             $.ajax({
-
-//                 method:"POST",
-//                 url:"crud/edit.php",
-//                 data:{
-//                     'student':true,
-//                     'user_id':user_id_student,
-//                 },
-//                 success: function(response){
-//                     console.log(response);
-//                     //event.preventDefault();
-//                     $('.view_user_data').html(response);
-//                     $('#modalStudent').modal('toggle');
-              
-//                 },
-//                 error: function(xhr, status, error){
-//                 console.log(xhr.responseText);
-//             }
-//             });
-//         });
-      
-
-
-//         $('.btnDel').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id').text();
-           
-//             // $('#modalConfirmationDel').modal('show');
-//             $.ajax({
-//                 method:"POST",
-//                 url:"crud/delete.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-//                 //    $('.view-message-box').html(response);
-//                 //    $('#EditModal').modal('show');
-//                 }
-//             });
-//         });
-
-//         $('.btnDel_teacher').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id_teacher').text();
-           
-//             // $('#modalConfirmationDel').modal('show');
-//             $.ajax({
-//                 method:"POST",
-//                 url:"crud/delete.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-                  
-//                 //    $('.view-message-box').html(response);
-//                 //    $('#EditModal').modal('show');
-//                 }
-//             });
-//         });
-
-//         $('.btnDel_student').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id_student').text();
-           
-//             // $('#modalConfirmationDel').modal('show');
-//             $.ajax({
-//                 method:"POST",
-//                 url:"crud/delete.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-                  
-//                 //    $('.view-message-box').html(response);
-//                 //    $('#EditModal').modal('show');
-//                 }
-//             });
-//         });
-
-
-
-
-
-
-
-
-
-
-//         $('.btnUpload').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id').text();
-           
-//             $.ajax({
-//                 method:"POST",
-//                 url:"uploadSched.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-
-//                 }
-//             });
-//         });
-
-//         $('.btnUpload_teacher').click(function(e){
-//             e.preventDefault();
-
-//             var user_id= $(this).closest('tr').find('.user_id').text();
-           
-//             $.ajax({
-//                 method:"POST",
-//                 url:"uploadSched.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-
-//                 }
-//             });
-//         });
-
-
-
-
-
-
-
-
-//         $('.btnRemove').click(function(e){
-          
-//         //    e.preventDefault();
-//             var filename= document.getElementById('filename').innerHTML;
-//             var user_id= $(this).closest('tr').find('.user_id').text();
-          
-//             $.ajax({
-//                 method:"POST",
-//                 url:"removesched.php",
-//                 data:{
-//                     'click_view_btn':true,
-//                     'filename': filename,
-//                     'user_id':user_id,
-//                 },
-//                 success: function(response){
-//                     //alert(response);
-//                 }
-//             });
-//         });
-
-//         $('.btnRemove_teacher').click(function(e){
-          
-//           //    e.preventDefault();
-//               var filename= document.getElementById('filename').innerHTML;
-//               var user_id= $(this).closest('tr').find('.user_id_teacher').text();
-            
-//               $.ajax({
-//                   method:"POST",
-//                   url:"removesched.php",
-//                   data:{
-//                       'click_view_btn':true,
-//                       'filename': filename,
-//                       'user_id':user_id,
-//                   },
-//                   success: function(response){
-//                       //alert(response);
-//                   }
-//               });
-//           });
-
-
-//         $('#getCourse').on("keyup", function(){
-//             var getName = $(this).val();
-//             var getYear = document.getElementById('search').value;
-//             //alert(document.getElementById('search').value);
-            
-//             $.ajax({
-//             method:'POST',
-//             url:'searchajax.php',
-//             data:{
-//                 names:getName,
-//                 year:getYear
-//             },
-//             success:function(response)
-//             {
-//                 $("#showdata").html(response);
-//             } 
-//             });
-//          });
-
-//          $('#getTeacher').on("keyup", function(){
-//             var getName = $(this).val();
-//           //  var getYear = document.getElementById('search').value;
-//             //alert(document.getElementById('search').value);
-            
-//             $.ajax({
-//             method:'POST',
-//             url:'searchajax.php',
-//             data:{
-//                 view_teacher:true,
-//                 names:getName,
-               
-//             },
-//             success:function(response)
-//             {
-                
-//                 $("#showdata_teacher").html(response);
-//             } 
-//             });
-
-//          });
-
-//          $('#getStudent').on("keyup", function(){
-//             var getName = $(this).val();
-//             var getyear= document.getElementById('search_year').value;
-//             var getsection= document.getElementById('search_section').value;
-
-//           //  var getYear = document.getElementById('search').value;
-//             //alert(document.getElementById('search').value);
-            
-//             $.ajax({
-//             method:'POST',
-//             url:'searchajax.php',
-//             data:{
-//                 view_student:true,
-//                 names:getName,
-//                 year: getyear,
-//                 section:getsection
-               
-//             },
-//             success:function(response)
-//             {
-//                 $("#showdata_student").html(response);
-//             } 
-//             });
-//          });
-
-
-       
-//          $('#search').change(function() {
-//             var selectedItem = $(this).val();
-//             var getcourse = document.getElementById('getCourse').value;
-
-//             $.ajax({
-//                 url: 'comboboxajax.php',
-//                 method: 'POST',
-//                 data: { 
-//                     item: selectedItem,
-//                     course: getcourse
-                
-//                 },
-//                 success: function(response) {
-                   
-//                     $('#showdata').html(response);
-
-//                 }
-//             });
-//         });
-
-//         $('#search_year').change(function() {
-//             var selectedItem = $(this).val();
-//             var getcourse = document.getElementById('getStudent').value;
-//             var getsection= document.getElementById('search_section').value;
-
-//             $.ajax({
-//                 url: 'comboboxajax.php',
-//                 method: 'POST',
-//                 data: { 
-//                     selectedYear: true,
-//                     item: selectedItem,
-//                     course: getcourse,
-//                     section: getsection
-                
-//                 },
-//                 success: function(response) {
-//                   //  alert(response);
-//                    $('#showdata_student').html(response);
-//                 }
-//             });
-//         });
-
-//         $('#search_section').change(function() {
-//             var selectedItem = $(this).val();
-//             var getcourse = document.getElementById('getStudent').value;
-//             var getyear= document.getElementById('search_year').value;
-
-//             $.ajax({
-//                 url: 'comboboxajax.php',
-//                 method: 'POST',
-//                 data: { 
-//                     selectedSection: true,
-//                     item: selectedItem,
-//                     course: getcourse,
-//                     year: getyear
-                
-//                 },
-//                 success: function(response) {
-//                   //  alert(response);
-//                    $('#showdata_student').html(response);
-//                 }
-//             });
-//         });
-
-        
-
-       
-       
-//     });
-</script>
-
-
 
