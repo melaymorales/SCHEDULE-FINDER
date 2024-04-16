@@ -15,7 +15,6 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">Course</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#teacher">Teacher</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#student">Student</a></li>
-                    <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#skills">Setting</a></li> -->
                     <li class="nav-item "><a class="nav-link js-scroll-trigger" href="#setting">Setting</a></li>
                     <li class="nav-item"><a href="" data-bs-toggle="modal" data-bs-target="#logoutModal" class="nav-link js-scroll-trigger">Logout</a></li>
                 </ul>
@@ -820,6 +819,8 @@
     <?php include '../app/views/ajax/delete.php'; ?>
     <?php include '../app/views/ajax/upload.php'; ?>
     <?php include '../app/views/ajax/remove.php'; ?>
+
+    <?php include '../app/views/ajax/retrieveData.php'; ?>
 
     <?php focusTable($tableAdmin) ?>
     

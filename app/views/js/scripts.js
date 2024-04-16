@@ -33,10 +33,12 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 function removePTag() {
+  
     var inputText = document.getElementById('getCourse').value;
+
     var paragraph = document.getElementById('page_section');
 
-    if (inputText.trim() !== '') {
+    if( selectedValue !== '') {
         paragraph.style.display = 'none';
     } else {
         paragraph.style.display = 'block';
@@ -98,6 +100,9 @@ window.onload = function() {
 //    table.scrollIntoView({ behavior: 'smooth', block: 'start' });}
    
 };
+
+
+
 
 
 

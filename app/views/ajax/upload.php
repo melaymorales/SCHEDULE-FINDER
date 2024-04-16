@@ -17,7 +17,7 @@ $(document).ready(function(){
             e.preventDefault();
 
             var user_id= $(this).closest('tr').find('.user_id').text();
-            alert(user_id);
+     
            
             $.ajax({
                 method:"POST",

@@ -48,34 +48,43 @@ class Home extends Controller
                  readfile($file);
                  exit;
              } else {
-                messageBox("File not found!");
+              //  messageBox("File not found!");
              }
          }else{
             $_SESSION['schedule']="d-none";
             $_SESSION['image_schedule'] = "";
          }
-
+       
          $this->view('home',[
 
             'schedule' => $_SESSION['schedule'],
-            'filename' =>   $_SESSION['image_schedule']
+            'filename' =>   $_SESSION['image_schedule'],
+            'alert' =>   $_SESSION['alert'],
+            'message' =>   $_SESSION['message']
 
         ]);
+        $_SESSION['alert'] ="disabled";
     }
 
     private function viewData($data){
 
-        if($data){
+        if(!empty($data)){
             $row = $data[0];
             if($row->image != "" ){
                 $_SESSION['schedule'] = "d-show";
-                $_SESSION['image_schedule']="sample.jpg";
+                $_SESSION['image_schedule']=$row->image;
+                $_SESSION['alert'] = "disabled";
+               
+               
             }else{
-                messageBox("Your Schedule is not available!");
+                $_SESSION['alert'] = "show";
+                $_SESSION['message'] = "Your Schedule is not available.";
                 $_SESSION['schedule'] = "d-none";
             }
 
         }else{
+            $_SESSION['message'] = "Please enter the correct ID.";
+            $_SESSION['alert'] = "show";
             $_SESSION['schedule'] = "d-none";
         }
     }

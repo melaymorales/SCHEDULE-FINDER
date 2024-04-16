@@ -1,5 +1,7 @@
 
-<?php include 'partials/header.php'; ?>
+<?php 
+
+include 'partials/header.php'; ?>
 
 <body>
       
@@ -11,7 +13,6 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
               <li><a class="dropdown-item" href="<?= ROOT."/login" ?>">Login</a></li>
-         
             </ul>
           
     </div>
@@ -25,9 +26,16 @@
     </nav>
     
     <form method="POST">
+    
     <section class="resume-section pb-0" id="search">
         <div class="container-fluid p-0">
             <div class="resume-section-content mb-5">
+
+            <div class="alert alert-danger alert-dismissible fade <?= $alert ?> mt-5" role="alert">
+                <?= $message ?> 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
                 <h1 class="mb-0 text-center mb-3" >
                     <span class="text-dark">Find My Schedule</span>
                 </h1>
@@ -38,16 +46,16 @@
                     
                     <input name="id" type="text text-center" class="form-control mb-5" placeholder="Ex. MA2019XXXX" >
                     <div style="width: 50%;  " class="mx-auto">
-                        <input onclick="scrollToSection('result_schedule')" type="submit" name="submit" class="form-control bg-primary text-white p-2 mx-auto" style="width:60%;" value="SEARCH">
+                        <input  type="submit" name="submit" class="form-control bg-primary text-white p-2 mx-auto" style="width:60%;" value="SEARCH">
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    </form>
+ </form>
 
 <form  method="POST">
-    <section class="pb-0 mt-0 <?php echo $schedule ?>"  id="result_schedule">
+    <section class="pb-0 mt-0  show  "  id="result_schedule">
         <div class="container-fluid p-0">
             <div class="resume-section-content mb-5">
               <div class="__container-show">
@@ -78,4 +86,6 @@
 
 </body>
 
-<?php include 'partials/footer.php'; ?>
+<?php 
+
+include 'partials/footer.php';  ?>

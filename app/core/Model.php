@@ -106,6 +106,22 @@ class Model extends Database
         return  $result;
     }
 
+    public function course_search_year($getinput,$getyear){
+
+        $query = "SELECT * FROM $this->table WHERE CONCAT(`course`, `acronym`) LIKE :searchTerm AND `year` = :yearTerm";
+        $data = [':searchTerm' => "%$getinput%",
+        ':yearTerm' => $getyear,
+        ];
+
+        $result = $this->query($query, $data);
+
+        if ($result) {
+            return $result;
+        }
+        
+        return  $result;
+    }
+
     public function teacher_search($getinput){
 
         $query = "SELECT * FROM $this->table WHERE CONCAT(`id`,`firstname`, `lastname`) LIKE :searchTerm";
