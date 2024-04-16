@@ -2,7 +2,7 @@
  use PhpOffice\PhpSpreadsheet\Spreadsheet;
  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
- session_start();
+
  $_SESSION['alert_success_course']= $_SESSION['alert_success_teacher'] = $_SESSION['alert_success_student'] = $_SESSION['alert_success_password']="d-none";
  $_SESSION['alert_unsuccess_course']=$_SESSION['alert_unsuccess_teacher'] = $_SESSION['alert_unsuccess_student'] = $_SESSION['alert_unsuccess_password']= "d-none";
  $_SESSION['message']="";
@@ -15,6 +15,9 @@ class Admin extends Controller{
 
     public function index(){
 
+      if($_POST['login']){
+
+      $this->login();
 
       $this->register();
       $this->import();
@@ -92,7 +95,9 @@ class Admin extends Controller{
             'message' =>  $_SESSION['message']
      ]);
 
-
+      }else{
+            header("location: ".ROOT."/login");
+      }
     }
 
     private function register(){
@@ -966,6 +971,19 @@ class Admin extends Controller{
       }
   }
   
+  private function login(){
+      $account = new Account();
 
+      $arr['username'] = $_POST['username'];
+      $arr['password'] = $_POST['password'];
+
+      $data = $account->where($arr);
+     
+      if(empty($data)){
+            $_SESSION['alert']="show";
+           header("location: ".ROOT."/login");
+
+      }
+  }
 }
 

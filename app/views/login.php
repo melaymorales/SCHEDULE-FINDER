@@ -20,12 +20,12 @@
         </div>
     </nav>
   
-    <form action="" method="POST">
+    <form action="<?=ROOT."/admin"?>" method="POST">
 
         <section class="resume-section pb-0" id="about">
             <div class="container-fluid p-0">
                 <div class="resume-section-content mb-5">
-                <div class="alert alert-danger alert-dismissible fade <?php echo $_SESSION['alert'];?>" role="alert">
+                <div class="alert alert-danger alert-dismissible fade <?= $_SESSION['alert'] ?>" role="alert">
                         <strong> Invalid Username or Password </strong> !
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -41,7 +41,7 @@
                         <input type="text" class="form-control mb-3" placeholder="username" style="border:1px solid lightgray;" name="username">
                         <input type="password" class="form-control mb-4" placeholder="password" style="border:1px solid lightgray;" name="password">
                         <div style="width: 50%; " class="mx-auto">
-                            <input type="submit" name="submit" class="form-control bg-primary text-white p-2 mx-auto" value="LOGIN" style="width:50%;">
+                            <input type="submit" name="login" class="form-control bg-primary text-white p-2 mx-auto" value="LOGIN" style="width:50%;">
                         </div>
                     </div>
                 </div>
