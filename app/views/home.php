@@ -4,17 +4,18 @@
 <body>
       
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top " id="sideNav">
-        <div class="dropdown  ms-md-auto" >
+        
+    <div class="dropdown  ms-md-auto" >
             <button class="btn text-white  fs-3  " type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-caret-down"></i>
+                <i class="fa-solid fa-caret-down"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <li><a class="dropdown-item" href="login.php">Login</a></li>
-              
-            </ul>
-          </div>
+              <li><a class="dropdown-item" href="<?= ROOT."/login" ?>">Login</a></li>
          
-          </div>
+            </ul>
+          
+    </div>
+         
         <div  class="my-auto ">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
                 <span class="d-block d-lg-none">Bulacan Polytechnic College</span>
@@ -46,14 +47,14 @@
     </form>
 
 <form  method="POST">
-    <section class="pb-0 mt-0 <?php echo $_SESSION['schedule']; ?>"  id="result_schedule">
+    <section class="pb-0 mt-0 <?php echo $schedule ?>"  id="result_schedule">
         <div class="container-fluid p-0">
             <div class="resume-section-content mb-5">
               <div class="__container-show">
                 <div class="row">
                     <div class="col-12 col-md-8" >
                         <div style="height: 600px; width: 80%; " class="mx-auto shadow-lg rounded">
-                            <img src="../app/views/assets/img/<?php echo $_SESSION['image_schedule']?>" alt="schedule" class="__img-schedule rounded">
+                            <img src="../app/views/assets/img/<?php echo $filename ?>" alt="schedule" class="__img-schedule rounded">
                         </div>
                     </div>
                     <div class="col-12 col-md-4 d-flex" >

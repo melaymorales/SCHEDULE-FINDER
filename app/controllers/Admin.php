@@ -15,7 +15,7 @@ class Admin extends Controller{
 
     public function index(){
 
-      if($_POST['login']){
+      if(isset($_POST['login']) || $_SESSION['password'] != ""){
 
       $this->login();
 
@@ -25,10 +25,12 @@ class Admin extends Controller{
       $this->delete();
       $this->upload();
       $this->remove();
+      $this->logout();
       $this->changepassword();
 
+
       
-      
+    
       $course = new Course();
       $teacher = new Teacher();
       $student = new Student();
@@ -92,10 +94,13 @@ class Admin extends Controller{
             'alert_unsuccess_student' =>  $_SESSION['alert_unsuccess_student'],
             'alert_success_password' =>  $_SESSION['alert_success_password'],
             'alert_unsuccess_password' =>  $_SESSION['alert_unsuccess_password'],
-            'message' =>  $_SESSION['message']
+            'message' =>  $_SESSION['message'],
+            'tableAdmin' => $_SESSION['tableAdmin']
      ]);
 
       }else{
+            $_SESSION['alert'] = "disabled";
+        
             header("location: ".ROOT."/login");
       }
     }
@@ -126,7 +131,9 @@ class Admin extends Controller{
               
             }
 
-     
+
+          
+            $_SESSION['tableAdmin']="course";
 
             
       }else if(isset($_POST['AddTeacher'])){
@@ -150,6 +157,9 @@ class Admin extends Controller{
    
             }
 
+            $_SESSION['tableAdmin']="teacher";
+
+
       }else if(isset($_POST['AddStudent'])){
 
             $student = new Student();
@@ -162,18 +172,35 @@ class Admin extends Controller{
                   $_SESSION['message']="The Student attempting to register is already exist.";
         
                }else{
-                  $arr['firstname'] = ucfirst($_POST['firstname']);
-                  $arr['lastname']= ucfirst($_POST['lastname']);
-                  $arr['course']= strtoupper($_POST['course']);
-                  $arr['year']=strtolower($_POST['year']);
-                  $arr['section']= strtoupper($_POST['section']);
+                  $course = new Course();
 
-                  $data = $student->insert($arr);
-                  $_SESSION['alert_success_student']="d-show";
-                  $_SESSION['message']="Successfully registered New Student.";
-        
+                  $studenInfo['course'] = strtoupper($_POST['course']);
+                  $studenInfo['section'] = strtoupper($_POST['section']);
+                  $studenInfo['year'] = strtolower($_POST['year']);
+
+                  $data = $course->where($studenInfo);
+
+                  if(!empty($data)){
+
+                        $arr['firstname'] = ucfirst($_POST['firstname']);
+                        $arr['lastname']= ucfirst($_POST['lastname']);
+                        $arr['course']= strtoupper($_POST['course']);
+                        $arr['year']=strtolower($_POST['year']);
+                        $arr['section']= strtoupper($_POST['section']);
+                        $data = $student->insert($arr);
+                        $_SESSION['alert_success_student']="d-show";
+                        $_SESSION['message']="Successfully registered New Student.";
+
+                  }else{
+                        $_SESSION['alert_unsuccess_student']="d-show";
+                        $_SESSION['message']="Unsuccessfully registered. The course year does not exist.";
+                  }
+  
             }
 
+            $_SESSION['tableAdmin']="student";
+      }else{
+            $_SESSION['tableAdmin']="";
       }
      
     
@@ -333,6 +360,8 @@ class Admin extends Controller{
             
         }
 
+        $_SESSION['tableAdmin']="course";
+
     }else if(isset($_POST['import_teacher'])){
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -447,6 +476,7 @@ class Admin extends Controller{
             }        
          }
        
+         $_SESSION['tableAdmin']="teacher";
       }else if(isset($_POST['import_student'])){
 
         
@@ -543,6 +573,7 @@ class Admin extends Controller{
                   }
 
             }
+            $_SESSION['tableAdmin']="student";
       }
 
   }
@@ -568,6 +599,8 @@ class Admin extends Controller{
                $_SESSION['message']="Successfully updated the Course.";
  
             }
+
+            $_SESSION['tableAdmin']="course";
               
       }else if(isset($_POST['bntUP_teacher'])){
             $teacher = new Teacher();
@@ -590,6 +623,8 @@ class Admin extends Controller{
    
             }
             
+            $_SESSION['tableAdmin']="teacher";
+
         }else if(isset($_POST['bntUP_student'])){
             $student = new Student();
 
@@ -627,7 +662,7 @@ class Admin extends Controller{
                   }
 
             }
-            
+            $_SESSION['tableAdmin']="student";
         }
   }
 
@@ -660,6 +695,8 @@ class Admin extends Controller{
             $_SESSION['alert_success_course']="d-show";
             $_SESSION['message']="The Course has been successfully deleted.";
 
+            $_SESSION['tableAdmin']="course";
+
       }else if(isset($_POST['save_teacher'])){
             $teacher = new Teacher();
 
@@ -687,6 +724,8 @@ class Admin extends Controller{
            $_SESSION['alert_success_teacher']="d-show";
            $_SESSION['message']="The teacher has been successfully deleted.";
 
+           $_SESSION['tableAdmin']="teacher";
+
       }else if(isset($_POST['save_student'])){
 
             $student = new Student();
@@ -697,7 +736,7 @@ class Admin extends Controller{
             $_SESSION['alert_success_student']="d-show";
             $_SESSION['message']="The student has been successfully deleted.";
         
-        
+            $_SESSION['tableAdmin']="student";
         }
 
   }
@@ -790,6 +829,8 @@ class Admin extends Controller{
                
             }
 
+            $_SESSION['tableAdmin']="course";
+
         }else if(isset($_POST['submit_teacher'])){
 
  
@@ -858,6 +899,8 @@ class Admin extends Controller{
                   $_SESSION['alert_success_teacher']="d-show";
                   $_SESSION['message'] = "The file ".htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
             }
+
+            $_SESSION['tableAdmin']="teacher";
         }
   }
 
@@ -887,6 +930,7 @@ class Admin extends Controller{
                 
                 } 
              
+                $_SESSION['tableAdmin']="course";
             
         }else if(isset($_POST['teacher_sched'])){
             $teacher = new Teacher();
@@ -912,6 +956,8 @@ class Admin extends Controller{
                     }
                 
                 } 
+
+                $_SESSION['tableAdmin']="teacher";
         }
 
   }
@@ -956,6 +1002,8 @@ class Admin extends Controller{
                   $_SESSION['message']="Invalid old password. Please enter the correct old password.";
 
             }
+
+            $_SESSION['tableAdmin']="setting";
  
       }
 
@@ -972,18 +1020,35 @@ class Admin extends Controller{
   }
   
   private function login(){
+
       $account = new Account();
 
-      $arr['username'] = $_POST['username'];
-      $arr['password'] = $_POST['password'];
+      if(isset($_POST['login'])){
 
-      $data = $account->where($arr);
-     
-      if(empty($data)){
-            $_SESSION['alert']="show";
-           header("location: ".ROOT."/login");
+            $arr['username'] = $_POST['username'];
+            $arr['password'] = $_POST['password'];
 
+            $data = $account->where($arr);
+      
+            if(empty($data) && $_SESSION['password']==""){
+                  $_SESSION['alert']="show";
+            header("location: ".ROOT."/login");
+
+            }else{
+                  $_SESSION['password'] = $_POST['password'];
+                  
+            }
       }
+  }
+  private function logout(){
+
+      if(isset($_POST['logout'])){
+            $_SESSION['alert']="disabled";
+            $_SESSION['password'] = "";    
+            
+            header("Location: ".ROOT."/home");
+      }
+        
   }
 }
 

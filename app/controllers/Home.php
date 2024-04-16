@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 class Home extends Controller
 {
     public function index()
@@ -25,11 +25,11 @@ class Home extends Controller
             }
 
             $this->viewData($data);
+
+           
             
 
-        }
-
-        if(isset($_POST['downloadBtn'])) {
+        }else if(isset($_POST['downloadBtn'])) {
    
             $file = 'assets/img/'.$_SESSION['image_schedule'];
          
@@ -49,11 +49,18 @@ class Home extends Controller
                  exit;
              } else {
                 messageBox("File not found!");
-              //   echo "File not found.";
              }
+         }else{
+            $_SESSION['schedule']="d-none";
+            $_SESSION['image_schedule'] = "";
          }
 
-         $this->view('home');
+         $this->view('home',[
+
+            'schedule' => $_SESSION['schedule'],
+            'filename' =>   $_SESSION['image_schedule']
+
+        ]);
     }
 
     private function viewData($data){

@@ -7,7 +7,7 @@
                 <i class="fa-solid fa-caret-down"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <li><a class="dropdown-item" href="index.php">Home</a></li>
+              <li><a class="dropdown-item" href="<?= ROOT."/home" ?>">Home</a></li>
               
             </ul>
         </div>
@@ -38,8 +38,8 @@
                     
                     <div class="__form-body mx-auto" style="width:70%;" >
                         
-                        <input type="text" class="form-control mb-3" placeholder="username" style="border:1px solid lightgray;" name="username">
-                        <input type="password" class="form-control mb-4" placeholder="password" style="border:1px solid lightgray;" name="password">
+                        <input type="text" class="form-control mb-3" placeholder="username" style="border:1px solid lightgray;" name="username" required>
+                        <input type="password" class="form-control mb-4" placeholder="password" style="border:1px solid lightgray;" name="password" required>
                         <div style="width: 50%; " class="mx-auto">
                             <input type="submit" name="login" class="form-control bg-primary text-white p-2 mx-auto" value="LOGIN" style="width:50%;">
                         </div>

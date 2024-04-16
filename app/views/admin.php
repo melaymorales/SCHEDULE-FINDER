@@ -2,8 +2,9 @@
 <?php include 'partials/header.php'; ?>
 
     <body id="page-top">
-
+    
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
                 <span class="d-block d-lg-none">Bulacan Polytechnic College</span>
                 <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="../app/views/assets/img/logo.png" alt="..." /></span>
@@ -54,7 +55,7 @@
                         <div class="row"  >
                             <div class="col-12 col-md-5 " >
                                 <div>
-                                    <input type="text" class="input-control __border ps-3"  placeholder="Search Course/SHS and Acronym" id="getCourse" style="font-size:1rem !important;padding:5px !important;width:100%;">
+                                    <input type="text" class="input-control __border ps-3"  placeholder="Search Course/SHS and Acronym" id="getCourse" oninput="removePTag()" style="font-size:1rem !important;padding:5px !important;width:100%;">
                                 </div>
                              </div>
 
@@ -178,8 +179,16 @@
                                 <td><?= $row->acronym ?></td>
                                 <td><?= $row->year ?></td>
                                 <td><?= $row->section ?></td>
-                               
-                                <td></td>
+                                <?php 
+                                    $student = new Student();
+                                    $arr['course'] = $row->acronym;
+                                    $arr['year'] = $row->year;
+                                    $arr['section'] = $row->section;
+
+                                    $data = $student->where($arr);
+                                    $count = (empty($data)) ? "0": count($data);
+                                ?>
+                                <td><?= $count ?></td>
                                 <td>
                                     <?php 
                                    
@@ -284,7 +293,7 @@
                             <div class="col-12 col-md-6">
                                 <div>
                                     
-                                    <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname" id="getTeacher"  style="font-size:1rem !important;padding:5px !important;width:90%;">
+                                    <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname" id="getTeacher" oninput="removePTag_teacher()" style="font-size:1rem !important;padding:5px !important;width:90%;">
                                    
                                 </div>
                              </div>
@@ -483,7 +492,7 @@
                                 <div>
                                    
                                     <div>
-                                        <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname, Course" id="getStudent" style="font-size:1rem !important;padding:5px !important;width:100%;">
+                                        <input type="text" class="input-control __border ps-3"  placeholder=" Search ID, Firstname, Lastname, Course" id="getStudent" style="font-size:1rem !important;padding:5px !important;width:100%;" oninput="removePTag_student()">
                                     </div>
                                    
                                 </div>
@@ -811,17 +820,15 @@
     <?php include '../app/views/ajax/delete.php'; ?>
     <?php include '../app/views/ajax/upload.php'; ?>
     <?php include '../app/views/ajax/remove.php'; ?>
+
+    <?php focusTable($tableAdmin) ?>
     
-
-
-                            
-
-
 
 
 <script>
-    
-    
+  
+  
+  
 //     window.onload = function() {
 //         var urlParams = new URLSearchParams(window.location.search);
 //         if (urlParams.has('page')) {

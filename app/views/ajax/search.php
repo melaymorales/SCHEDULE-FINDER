@@ -7,7 +7,7 @@ if (isset($_POST['view_teacher'])){
    
     $teacher = new Teacher();
 
-   $name = $_POST['names'];
+    $name = $_POST['names'];
   
     if($name==""){
         $current_page_teacher = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -17,6 +17,7 @@ if (isset($_POST['view_teacher'])){
     }else{
         $data = $teacher->teacher_search($name);
     }
+    if(!empty($data)){
 
     foreach($data as $row){
        
@@ -61,7 +62,7 @@ if (isset($_POST['view_teacher'])){
         </td>
         </tr>";
      }
-
+    }
 }else if(isset($_POST['view_student'])){
 
     include 'init.php';
@@ -91,8 +92,6 @@ if (isset($_POST['view_teacher'])){
     }else{
         $data = $student->student_search($name);
     }
-
-    // while($row = mysqli_fetch_assoc($query)){
 
     if(!empty($data)){
 
@@ -151,52 +150,66 @@ if (isset($_POST['view_teacher'])){
         }    
         
     }
+    
+    if(!empty($data)){
 
-    foreach($data as $row){
-       
-        $var_btnupload="";
-        $var_alertupload="";
-           if($row->image == ""){
-            $var_btnupload="show";
-            $var_alertupload="hidden";
-           }else{
-            $var_btnupload="hidden";
-            $var_alertupload="show";
-           }
-
-          
-                // $course_student = $row->acronym;
-                // $year_student = $row->year;
-                // $section_student = $row->section;
-                // $query_student= "SELECT * FROM `student-tbl` WHERE `course`= '$course_student' AND `section`= '$section_student' AND `year` = '$year_student' ";
-                // $result_student= mysqli_query($con,$query_student);
-                // $number_student = mysqli_num_rows($result_student);
-                            
-          $x .=  "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
-          <td>0</td>
-
-        <td>
+        foreach($data as $row){
         
-        <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
-                               
-        <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
-            <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
-            <p style='font-size: .5rem'>".$row->date."</p>
-            <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
-        </div>
+            $var_btnupload="";
+            $var_alertupload="";
+            if($row->image == ""){
+                $var_btnupload="show";
+                $var_alertupload="hidden";
+            }else{
+                $var_btnupload="hidden";
+                $var_alertupload="show";
+            }
+
         
-        </td>
+            $student = new Student();
+            $arr['course'] = $row->acronym;
+            $arr['year'] = $row->year;
+            $arr['section'] = $row->section;
 
-        <td>
-        <button class='btnEdit' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;background-color:rgba(14, 239, 14, 0.947); color:white;'> <i class='fa-solid fa-pen-to-square'></i> </button>
+            $data = $student->where($arr);
+            $count = (empty($data)) ? "0": count($data);
+     
+      
 
-        <button style='padding:2px 5px; border:none;border-radius:5px;background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel' class='btnDel'><i class='fa-solid fa-trash'></i></button>
-        </td>
-        </tr>";
+            
+                    // $course_student = $row->acronym;
+                    // $year_student = $row->year;
+                    // $section_student = $row->section;
+                    // $query_student= "SELECT * FROM `student-tbl` WHERE `course`= '$course_student' AND `section`= '$section_student' AND `year` = '$year_student' ";
+                    // $result_student= mysqli_query($con,$query_student);
+                    // $number_student = mysqli_num_rows($result_student);
+                                
+            $x .=  "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
+            <td>".$count."</td>
+
+            <td>
+            
+            <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
+                                
+            <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
+                <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
+                <p style='font-size: .5rem'>".$row->date."</p>
+                <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
+            </div>
+            
+            </td>
+
+            <td>
+            <button class='btnEdit' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;background-color:rgba(14, 239, 14, 0.947); color:white;'> <i class='fa-solid fa-pen-to-square'></i> </button>
+
+            <button style='padding:2px 5px; border:none;border-radius:5px;background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel' class='btnDel'><i class='fa-solid fa-trash'></i></button>
+            </td>
+            </tr>";
+        }
+
     }
 
 }
-
 echo $x;
 
 
@@ -227,45 +240,58 @@ echo $x;
             $data = $course->where($arr);
         }
 
-        foreach($data as $row){
+        if(!empty($data)){
 
-            $var_btnupload="";
-            $var_alertupload="";
-    
-                if($row->image == ""){
-                    $var_btnupload="show";
-                    $var_alertupload="hidden";
-                }else{
-                    $var_btnupload="hidden";
-                    $var_alertupload="show";
-                }
-    
-                //    $course_student = $row['acronym'];
-                //    $year_student = $row['year'];
-                //    $section_student = $row['section'];
-                //    $query_student= "SELECT * FROM `student-tbl` WHERE `course`= '$course_student' AND `section`= '$section_student' AND `year` = '$year_student' ";
-                //    $result_student= mysqli_query($con,$query_student);
-                //    $number_student = mysqli_num_rows($result_student);
-    
-                echo "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
-                 <td></td>
-                <td>
-                
-                <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
-                                       
-                <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
-                    <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
-                    <p style='font-size: .5rem'>".$row->date."</p>
-                    <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
-                </div>
-                
-                </td>
+            foreach($data as $row){
+
+                $var_btnupload="";
+                $var_alertupload="";
+        
+                    if($row->image == ""){
+                        $var_btnupload="show";
+                        $var_alertupload="hidden";
+                    }else{
+                        $var_btnupload="hidden";
+                        $var_alertupload="show";
+                    }
+                    
+          
+                    $student = new Student();
+                    $arr['course'] = $row->acronym;
+                    $arr['year'] = $row->year;
+                    $arr['section'] = $row->section;
+
+                    $data = $student->where($arr);
+                    $count = (empty($data)) ? "0": count($data);
+             
+            
+                    //    $course_student = $row['acronym'];
+                    //    $year_student = $row['year'];
+                    //    $section_student = $row['section'];
+                    //    $query_student= "SELECT * FROM `student-tbl` WHERE `course`= '$course_student' AND `section`= '$section_student' AND `year` = '$year_student' ";
+                    //    $result_student= mysqli_query($con,$query_student);
+                    //    $number_student = mysqli_num_rows($result_student);
+        
+                    echo "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
+                    <td>".$count."</td>
                     <td>
-                    <button class='btnEdit' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;background-color:rgba(14, 239, 14, 0.947); color:white;'> <i class='fa-solid fa-pen-to-square'></i> </button>
-                    <button style='padding:2px 5px; border:none;border-radius:5px;background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel' class='btnDel'><i class='fa-solid fa-trash'></i></button>
+                    
+                    <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
+                                        
+                    <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
+                        <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
+                        <p style='font-size: .5rem'>".$row->date."</p>
+                        <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
+                    </div>
+                    
                     </td>
-                    </tr>";
-            }
+                        <td>
+                        <button class='btnEdit' style='padding:2px 5px; margin:0 2px; border:none; border-radius:5px;background-color:rgba(14, 239, 14, 0.947); color:white;'> <i class='fa-solid fa-pen-to-square'></i> </button>
+                        <button style='padding:2px 5px; border:none;border-radius:5px;background-color:red; color:white;'  data-bs-toggle='modal' data-bs-target='#modalConfirmationDel' class='btnDel'><i class='fa-solid fa-trash'></i></button>
+                        </td>
+                        </tr>";
+                }
+         }
        
     }else if(isset($_POST['student_year'])){
         include 'init.php';
@@ -702,7 +728,7 @@ $(document).ready(function(){
     // Bind ng debounce function sa keyup event ng #getCourse input field
     $('#getCourse').on("keyup", function() {
         var getName = $(this).val();
-        var getYear = document.getElementById('search').value;
+        var getYear = document.getElementById('course_year').value;
         debouncedAjaxRequest(getName, getYear);
     });
 
