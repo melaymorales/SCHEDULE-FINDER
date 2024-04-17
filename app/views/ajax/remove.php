@@ -5,6 +5,10 @@
         session_start();
         $_SESSION['id']=$_POST['user_id'];
         $_SESSION['filename']=$_POST['filename'];
+
+        echo'
+        <script> alert("'.$_SESSION['id'].'") </script>
+         ';
     }
 ?>
 

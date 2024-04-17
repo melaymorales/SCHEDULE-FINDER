@@ -148,13 +148,13 @@ if(isset($_POST['view_course'])){
                 echo "<tr><td class='d-none user_id'>".$row->id."</td><td>".$row->course."</td><td>".$row->acronym."</td><td>".$row->year."</td><td>".$row->section."</td>
                 <td>".$count."</td>
                 <td>
-                
+
                 <button class='btn bg-success text-white btnUpload' data-bs-toggle='modal' data-bs-target='#UploadModal'".$var_btnupload." id='BTNUPLOAD' >+upload</button>
-                                    
+                                
                 <div class='alert alert-success alert-dismissible fade show ' role='alert' ".$var_alertupload." > 
                     <span id='filename' style='font-size:.8rem;'>".$row->image." </span><br>
                     <p style='font-size: .5rem'>".$row->date."</p>
-                    <button type='submit' class='btn-clossse btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
+                    <button type='submit' class='btn-close btnRemove'  style='font-size:15px;' name='submit' data-bs-toggle='modal' data-bs-target='#modalConfirmationRemove'></button>
                 </div>
                 
                 </td>
@@ -443,6 +443,8 @@ pagination("student");
 }
 
 ?>
+   <?php include 'remove.php'; ?>
+
 
 <script>
     $(document).ready(function(){
@@ -599,4 +601,7 @@ $(document).ready(function(){
 });
 
 </script>
+
+
+
 

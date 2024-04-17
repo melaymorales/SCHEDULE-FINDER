@@ -212,15 +212,15 @@ class Admin extends Controller{
       $pathImage=array();
       $unsuccessfulImage = $duplicateImage ="";
 
-    
+      
 
       if(isset($_POST['import_course'])){
+
+            $course = new Course();
          
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
             $allowed_ext = ['xls','csv','xlsx'];
-           
-            $course = new Course();
            
 
            if(in_array($file_ext, $allowed_ext))
@@ -232,6 +232,8 @@ class Admin extends Controller{
                   $count = "0";
                   foreach($data as $row)
                   {
+                      
+
                         if($count > 0)
                         {
 
@@ -248,9 +250,9 @@ class Admin extends Controller{
                               $year="3rd";
                         }else if($year=="4"){
                               $year="4th";
-                        }else if($year=="grade11" || $year=="grade  11"){
+                        }else if($year=="grade11" || $year=="grade  11" || $year == "11"){
                               $year="grade 11";
-                        }else if($year=="grade12" || $year=="grade  12"){
+                        }else if($year=="grade12" || $year=="grade  12" ||  $year == "12"){
                               $year="grade 12";
                         }
                         $arr['acronym']=$acronym;
@@ -258,17 +260,17 @@ class Admin extends Controller{
                         $arr['section']=$section;
 
                         if($_POST['import'] == "option1"){
-                            
-                              $current_course= $course->where($arr);
+
+                              $arr['course'] = trim($level,".");
+
+                              $current_course = $course->where($arr);
 
                               if(!empty($current_course)){
                                     $msg = true;
+                                    
                               }else{
-                                    $arr['course'] = $level;
-                                    if($level != "" ){
-                                          $course->insert($arr);
-                                    }
-                                   
+                              
+                                   $course->insert($arr);
                               }
 
                         }else{
@@ -297,16 +299,24 @@ class Admin extends Controller{
                                           
                                     }else{
                                           if($image != ""){
-                                          if(copy($image,$targetfile)) {
-                                                $id = $id_current_course->id;
-                                                date_default_timezone_set('Asia/Manila');
-                                                $currentDateTime = date('m/d/Y h:ia');
-                                                $arr_image['image'] = $imagename;
-                                                $arr_image['date'] = $currentDateTime;
-                                                $course->update_course($id,$arr_image);
-                                         
+
+                                                if(file_exists($targetfile)){
+                                                      if(copy($image,$targetfile)) {
+                                                            $id = $id_current_course->id;
+                                                            date_default_timezone_set('Asia/Manila');
+                                                            $currentDateTime = date('m/d/Y h:ia');
+                                                            $arr_image['image'] = $imagename;
+                                                            $arr_image['date'] = $currentDateTime;
+                                                            $course->update_course($id,$arr_image);
                                                 
-                                           }
+                                                            
+                                                      }
+                                                }else{
+                                                      if($imagename != ""){
+                                                         $unsuccessfulImage .= $imagename. " ,";
+                                                         $msg = true;
+                                                       }
+                                                }
                                         }
                                     }
             
@@ -903,14 +913,16 @@ class Admin extends Controller{
 
       if(isset($_POST['course_sched'])){
             $course = new Course();
-            $arr_id['id'] = $id =  $_SESSION['id'];
+            $arr_id['id'] = $id  =  $_SESSION['id'];
 
             $data = $course->where($arr_id);
             $row = $data[0];
             $imageToDelete = $row->image;
   
                 if(file_exists($folderPath.$imageToDelete)){
+                 
                     if(unlink($folderPath . $imageToDelete)){
+                       
                         $arr_image['image']="";
                         $arr_image['date']="";
                         $course->update_course($id,$arr_image);
@@ -918,6 +930,8 @@ class Admin extends Controller{
                         $_SESSION['message'] = "The file ".$imageToDelete." has been removed successfully!";
 
                     }else{
+                        
+
                         $_SESSION['alert_unsuccess_course'] = "d-show";
                         $_SESSION['message'] = "Something went wrong. Please try again!";
                     }

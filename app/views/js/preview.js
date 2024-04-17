@@ -44,17 +44,17 @@ $(document).ready(function() {
         $('#previewModal').modal('show'); 
         
     }else{
-        var reader = new FileReader();
+      
             document.getElementById('c1').innerHTML="COURSE/STRAND";
             document.getElementById('c2').innerHTML="ACRONYM";
             document.getElementById('c3').innerHTML="YEAR";
             document.getElementById('c4').style.display="show";
             document.getElementById('c4').innerHTML="SECTION";
             document.getElementById('image').style.display="show";
-            document.getElementById('image').innerHTML="IMAGE PATH";
+            document.getElementById('image').innerHTML="IMAGE PATHH";
             document.getElementById('c5').style.display="none";
             
-    
+            var reader = new FileReader();
     reader.onload = function(e) {
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, { type: 'array' });
@@ -63,7 +63,7 @@ $(document).ready(function() {
         var table = XLSX.utils.sheet_to_json(sheet, { header: 1 });
         var rows = '';
     
-        for (var i = 0; i <= 4; i++) { 
+        for (var i = 1; i <= 4; i++) { 
             rows += '<tr>';
             for (var j = 0; j < 5; j++) { 
                 rows += '<td>' + (table[i][j] || '') + '</td>';
