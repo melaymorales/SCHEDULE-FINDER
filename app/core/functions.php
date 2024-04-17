@@ -71,7 +71,6 @@ function pagination($selectTag){
         </script>
    <?php }
 
-
 }
 
 ?>

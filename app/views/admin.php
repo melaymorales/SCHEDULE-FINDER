@@ -12,7 +12,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">Course</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#course">Course</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#teacher">Teacher</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#student">Student</a></li>
                     <li class="nav-item "><a class="nav-link js-scroll-trigger" href="#setting">Setting</a></li>
@@ -25,7 +25,7 @@
             
     <!-- ################################### COURSE ##################################### -->
     <div>       
-            <section class="resume-section" id="about" style="padding-top: 30px !important;" >
+            <section class="resume-section" id="course" style="padding-top: 30px !important;" >
 
                 <div class="resume-section-content" >
                    
@@ -821,6 +821,9 @@
     <?php include '../app/views/ajax/remove.php'; ?>
 
     <?php include '../app/views/ajax/retrieveData.php'; ?>
+    <?php focusTable($tableAdmin) ?>
+
+    
 
 
 

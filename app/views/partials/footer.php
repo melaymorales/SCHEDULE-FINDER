@@ -6,9 +6,11 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
         
-
+      
         <script src="../app/views/js/scripts.js"></script>
         <script src="../app/views/js/preview.js"></script>
+    
+        
 
 
         

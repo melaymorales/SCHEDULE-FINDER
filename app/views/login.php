@@ -25,6 +25,7 @@
         <section class="resume-section pb-0" id="about">
             <div class="container-fluid p-0">
                 <div class="resume-section-content mb-5">
+                    
                 <div class="alert alert-danger alert-dismissible fade <?= $_SESSION['alert'] ?>" role="alert">
                         <strong> Invalid Username or Password </strong> !
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

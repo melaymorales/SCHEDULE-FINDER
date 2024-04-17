@@ -1026,11 +1026,12 @@ class Admin extends Controller{
       
             if(empty($data) && $_SESSION['password']==""){
                   $_SESSION['alert']="show";
-            header("location: ".ROOT."/login");
+                  header("location: ".ROOT."/login");
 
             }else{
-                  $_SESSION['password'] = $_POST['password'];
                   
+                  $_SESSION['password'] = $_POST['password'];
+
             }
       }
   }

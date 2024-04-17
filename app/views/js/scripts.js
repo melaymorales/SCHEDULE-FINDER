@@ -6,6 +6,7 @@
 //
 // Scripts
 // 
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Activate Bootstrap scrollspy on the main nav element
@@ -38,7 +39,7 @@ function removePTag() {
 
     var paragraph = document.getElementById('page_section');
 
-    if( selectedValue !== '') {
+    if (inputText.trim() !== '') {
         paragraph.style.display = 'none';
     } else {
         paragraph.style.display = 'block';
