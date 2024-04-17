@@ -2,13 +2,12 @@
 $(document).ready(function() {
 
     document.getElementById('import_file').addEventListener('change', function(e) {
+
         var option = document.querySelector('input[name="import"]:checked').value;
         var file = e.target.files[0];
 
-        alert(file);
-    
-    
         if(option == "option1"){
+  
             document.getElementById('c1').innerHTML="COURSE/STRAND";
             document.getElementById('c2').innerHTML="ACRONYM";
             document.getElementById('c3').innerHTML="YEAR";
@@ -43,6 +42,7 @@ $(document).ready(function() {
     
         reader.readAsArrayBuffer(file);
         $('#previewModal').modal('show'); 
+        
     }else{
         var reader = new FileReader();
             document.getElementById('c1').innerHTML="COURSE/STRAND";

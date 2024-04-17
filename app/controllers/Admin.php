@@ -3,6 +3,7 @@
  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
+
  $_SESSION['alert_success_course']= $_SESSION['alert_success_teacher'] = $_SESSION['alert_success_student'] = $_SESSION['alert_success_password']="d-none";
  $_SESSION['alert_unsuccess_course']=$_SESSION['alert_unsuccess_teacher'] = $_SESSION['alert_unsuccess_student'] = $_SESSION['alert_unsuccess_password']= "d-none";
  $_SESSION['message']="";
@@ -15,9 +16,9 @@ class Admin extends Controller{
 
     public function index(){
 
-      if(isset($_POST['login']) || $_SESSION['password'] != ""){
+     if(isset($_POST['login']) || $_SESSION['password'] != ""){
 
-      $this->login();
+     $this->login();
 
       $this->register();
       $this->import();
@@ -98,7 +99,7 @@ class Admin extends Controller{
             'tableAdmin' => $_SESSION['tableAdmin']
      ]);
 
-      }else{
+     }else{
             $_SESSION['alert'] = "disabled";
         
             header("location: ".ROOT."/login");
@@ -174,7 +175,7 @@ class Admin extends Controller{
                }else{
                   $course = new Course();
 
-                  $studenInfo['course'] = strtoupper($_POST['course']);
+                  $studenInfo['acronym'] = strtoupper($_POST['course']);
                   $studenInfo['section'] = strtoupper($_POST['section']);
                   $studenInfo['year'] = strtolower($_POST['year']);
 
@@ -207,12 +208,14 @@ class Admin extends Controller{
     }
 
     private function import(){
+
       $pathImage=array();
       $unsuccessfulImage = $duplicateImage ="";
 
     
 
       if(isset($_POST['import_course'])){
+         
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
             $allowed_ext = ['xls','csv','xlsx'];
@@ -220,14 +223,13 @@ class Admin extends Controller{
             $course = new Course();
            
 
-            if(in_array($file_ext, $allowed_ext))
+           if(in_array($file_ext, $allowed_ext))
             {
-                  $inputFileNamePath = $_FILES['import_file']['tmp_name'];
-                  $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
-                  $data = $spreadsheet->getActiveSheet()->toArray();
+                 $inputFileNamePath = $_FILES['import_file']['tmp_name'];
+                 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
+                 $data = $spreadsheet->getActiveSheet()->toArray();
 
                   $count = "0";
-                 // show(count($data));
                   foreach($data as $row)
                   {
                         if($count > 0)
@@ -251,7 +253,6 @@ class Admin extends Controller{
                         }else if($year=="grade12" || $year=="grade  12"){
                               $year="grade 12";
                         }
-                       // $arr['course'] = $level;
                         $arr['acronym']=$acronym;
                         $arr['year']=$year;
                         $arr['section']=$section;
@@ -266,7 +267,6 @@ class Admin extends Controller{
                                     $arr['course'] = $level;
                                     if($level != "" ){
                                           $course->insert($arr);
-                                      //    $msg = true;
                                     }
                                    
                               }
@@ -285,14 +285,10 @@ class Admin extends Controller{
 
                                     $arr_image['image']= $imagename;
                                     $image_course = $course->where($arr_image);
-                                   // $id_image = $image_course[0];
-                                    // $query_image="SELECT * FROM `course-shs-tbl` WHERE `image` = '$imagename' ";
-                                    // $result_image = mysqli_query($con,$query_image);
+                                 
                                     
                                     $image_teacher = $teacher->where($arr_image);
-                                    // $query_image_teacher="SELECT * FROM `teacher-tbl` WHERE `schedule` = '$imageName' ";
-                                    // $result_image_teacher = mysqli_query($con,$query_image_teacher);
-                                   // if((mysqli_num_rows($result_image)>0) || (mysqli_num_rows($result_image_teacher)>0) )
+                       
                                    if(!empty($image_course) || !empty( $image_teacher)){
                                           
                                           if($imagename != ""){
@@ -303,20 +299,18 @@ class Admin extends Controller{
                                           if($image != ""){
                                           if(copy($image,$targetfile)) {
                                                 $id = $id_current_course->id;
-                                             //  show($id);
                                                 date_default_timezone_set('Asia/Manila');
                                                 $currentDateTime = date('m/d/Y h:ia');
                                                 $arr_image['image'] = $imagename;
                                                 $arr_image['date'] = $currentDateTime;
                                                 $course->update_course($id,$arr_image);
-                                                // $query="UPDATE `course-shs-tbl` SET `image`='$imagename', `date`='$currentDateTime' WHERE `course-shs` = '$level' AND `acronym` = '$acronym' AND `year` = '$year' AND `section` = '$section' ";
-                                                // $result = mysqli_query($con, $query);
+                                         
                                                 
                                            }
                                         }
                                     }
             
-                               //     $msg = true;
+                     
 
                               }else {
                                     if($imagename != ""){
@@ -340,7 +334,7 @@ class Admin extends Controller{
                         $_SESSION['message'] = ($_POST['import']=="option1") ? "Successfully registered New Courses." :  "Successfully uploaded Course Scheduled." ;
                         
                         
-                     //   ="Successfully registered New Courses.";
+              
                       
                     }else{
                         $_SESSION['alert_unsuccess_course']="d-show";

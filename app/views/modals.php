@@ -374,7 +374,7 @@
                                 <th id="c4">SECTION</th>
                                 <th id="image">IMAGE PATH</th>
                                 <th id="c5"></th>
-                                <!-- Iba pang mga columns dito -->
+                             
                             </tr>
                         </thead>
                         <tbody id="previewRows" ></tbody>
