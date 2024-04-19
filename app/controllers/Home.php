@@ -30,8 +30,12 @@ class Home extends Controller
             
 
         }else if(isset($_POST['downloadBtn'])) {
-   
-            $file = 'assets/img/'.$_SESSION['image_schedule'];
+
+           
+          
+             $file = '../app/views/assets/img/'.$_SESSION['image_schedule'];
+
+           
          
          
              if(file_exists($file)) {
@@ -49,7 +53,7 @@ class Home extends Controller
                  exit;
              } else {
               //  messageBox("File not found!");
-             }
+            }
          }else{
             $_SESSION['schedule']="d-none";
             $_SESSION['image_schedule'] = "";

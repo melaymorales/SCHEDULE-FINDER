@@ -241,14 +241,16 @@ if(isset($_POST['view_course'])){
     $year=$_POST['year'];
     $section=$_POST['section'];
 
-    if($name == ""){
+    if($name == "" && $section == ""  &&  $year == ""){
 
         $current_page_student = isset($_GET['page']) ? $_GET['page'] : 1;
         $offset_student = ($current_page_student - 1) * 10;
         $data = $student->findAll_Page("row",$offset_student);
 
     }else if($section != "" && $name == "" && $year != ""){
-        $data = $student->student_section__year($year,$section);
+        $arr_s['year'] = $year;
+        $arr_s['section'] = $section;
+        $data= $student->where($arr_s);
 
     }else if($section == "" && $name != "" && $year != ""){
         $data = $student->student_search__section($name,$year);
@@ -258,8 +260,10 @@ if(isset($_POST['view_course'])){
 
     }else if($section != "" && $name != "" && $year != ""){
        $data= $student->student_search_section__year($name,$year, $section );
-    }else{
-        $data = $student->student_search($name);
+
+    }
+    else{
+       // $data = $student->student_search($name);
     }
 
     if(!empty($data)){
@@ -336,6 +340,9 @@ if($selectedItem == "" && $course == "" && $section==""){
 }else if($selectedItem != "" && $course != ""  && $section == ""){
     $data = $student->student_search__year($course,$selectedItem);
 
+}else if($selectedItem == "" && $course == ""  && $section != ""){
+    $arr_section['section'] =$section;
+    $data = $student->where($arr_section);
 }
 
 if(!empty($data)){
@@ -407,6 +414,9 @@ if($selectedItem == "" && $course == "" && $year==""){
 }else if($selectedItem != "" && $course != ""  && $year == ""){
     $data = $student->student_search__section($course,$selectedItem);
 
+}else if($selectedItem == "" && $course == "" && $year != ""){
+    $arr_year['year'] = $year;
+    $data = $student->where($arr_year);
 }
 
 if(!empty($data)){

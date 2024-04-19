@@ -54,7 +54,7 @@ include 'partials/header.php'; ?>
     </section>
  </form>
 
-<form  method="POST">
+<form method="POST">
     <section class="pb-0 mt-0  <?= $schedule ?>  "  id="result_schedule">
         <div class="container-fluid p-0">
             <div class="resume-section-content mb-5">
@@ -79,7 +79,7 @@ include 'partials/header.php'; ?>
                     </div>
                   </div>
               </div>
-            </div>sss
+            </div>
         </div>
     </section>
 </form>
@@ -88,6 +88,8 @@ include 'partials/header.php'; ?>
 
 </html>
 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const resultSchedule = document.getElementById('result_schedule');
@@ -96,4 +98,3 @@ include 'partials/header.php'; ?>
         }
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
