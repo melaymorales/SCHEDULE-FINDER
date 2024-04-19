@@ -55,7 +55,7 @@ include 'partials/header.php'; ?>
  </form>
 
 <form  method="POST">
-    <section class="pb-0 mt-0  show  "  id="result_schedule">
+    <section class="pb-0 mt-0  <?= $schedule ?>  "  id="result_schedule">
         <div class="container-fluid p-0">
             <div class="resume-section-content mb-5">
               <div class="__container-show">
@@ -88,4 +88,12 @@ include 'partials/header.php'; ?>
 
 </html>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const resultSchedule = document.getElementById('result_schedule');
+        if (resultSchedule) {
+            resultSchedule.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -278,10 +278,10 @@ class Admin extends Controller{
                               $targetfile = "../app/views/assets/img/".basename($image);
                               $imagename= basename($image);
                              
-                              $arr['course'] =$level;
                               $current_course= $course->where($arr);
                               
                               if(!empty($current_course)){
+                                    
                                     $id_current_course= $current_course[0];
                                     $teacher = new Teacher();
 
@@ -292,6 +292,7 @@ class Admin extends Controller{
                                     $image_teacher = $teacher->where($arr_image);
                        
                                    if(!empty($image_course) || !empty( $image_teacher)){
+                                               
                                           
                                           if($imagename != ""){
                                                 $duplicateImage.=" ".basename($image)." ,";
@@ -299,8 +300,8 @@ class Admin extends Controller{
                                           
                                     }else{
                                           if($image != ""){
-
-                                                if(file_exists($targetfile)){
+                                                
+                                                if(file_exists($image)){
                                                       if(copy($image,$targetfile)) {
                                                             $id = $id_current_course->id;
                                                             date_default_timezone_set('Asia/Manila');
@@ -308,21 +309,19 @@ class Admin extends Controller{
                                                             $arr_image['image'] = $imagename;
                                                             $arr_image['date'] = $currentDateTime;
                                                             $course->update_course($id,$arr_image);
-                                                
                                                             
+                                                      }else{
+                                                            $unsuccessfulImage .= $imagename. " ,";
                                                       }
                                                 }else{
-                                                      if($imagename != ""){
-                                                         $unsuccessfulImage .= $imagename. " ,";
-                                                         $msg = true;
-                                                       }
+                                                      $unsuccessfulImage .= $imagename. " ,";
                                                 }
+                                             
                                         }
                                     }
             
-                     
-
                               }else {
+                                   
                                     if($imagename != ""){
                                     $unsuccessfulImage .= $imagename. " ,";
                                     $msg = true;
@@ -387,9 +386,9 @@ class Admin extends Controller{
                   {
                      
       
-                        $id= $row['0'];
-                        $fname= $row['1'];
-                        $lname=$row['2'];
+                        $id = $row['0'];
+                        $fname= ucfirst($row['1']);
+                        $lname=ucfirst($row['2']);
 
                         $teacher_data['id']= $id;
       
@@ -427,17 +426,23 @@ class Admin extends Controller{
                                           }
       
                                     }else{
-                                    
-                                          if (copy($image,$targetfile)) {
-                                                date_default_timezone_set('Asia/Manila');
-                                                $currentDateTime = date('m/d/Y h:ia');
-                                                $arr_image['date']=   $currentDateTime;
+                                          if(file_exists($image)){
 
-                                                $teacher->update($teacher_data,$arr_image);
+                                                if($image != ""){
+                                                      if (copy($image,$targetfile)) {
+                                                            date_default_timezone_set('Asia/Manila');
+                                                            $currentDateTime = date('m/d/Y h:ia');
+                                                            $arr_image['date']=   $currentDateTime;
 
-                                                $query="UPDATE `teacher-tbl` SET `schedule`='$imagename', `date`='$currentDateTime' WHERE `id` = '$id' ";
-                                                $result = mysqli_query($con, $query);
-                                          
+                                                            $teacher->update_import($id,$arr_image);
+
+                                                      
+                                                      }else{
+                                                            $unsuccessfulImage .= $imagename. " ,";
+                                                      }
+                                                }
+                                          }else{
+                                                $unsuccessfulImage .= $imagename. " ,";
                                           }
                                     }
       
@@ -942,7 +947,8 @@ class Admin extends Controller{
             
         }else if(isset($_POST['teacher_sched'])){
             $teacher = new Teacher();
-            $arr_id['row'] = $id =  $_SESSION['id'];
+
+           $arr_id['row'] = $id =  $_SESSION['id'];
 
             $data = $teacher->where($arr_id);
             $row = $data[0];
@@ -950,6 +956,7 @@ class Admin extends Controller{
         
           
                 if(file_exists($folderPath.$imageToDelete)){
+
                     if(unlink($folderPath . $imageToDelete)){
                         $arr_image['image']="";
                         $arr_image['date']="";

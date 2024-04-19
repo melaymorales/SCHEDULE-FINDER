@@ -338,6 +338,27 @@ class Model extends Database
         return false;
     }
 
+    public function update_import($id, $data, $column = 'id'){
+        
+        $keys = array_keys($data);
+        $query = "update $this->table set ";
+
+        foreach ($keys as $key){
+            $query .= $key . " = :" . $key .", ";
+        }
+        
+
+        $query = trim($query,", ");
+        $query .= " where $column = :$column";
+
+      //  show($query);
+
+        $data[$column] = $id;
+        $this->query($query, $data);
+
+        return false;
+    }
+
    
     public function delete_course($id, $column= 'id'){
         $data[$column] = $id;

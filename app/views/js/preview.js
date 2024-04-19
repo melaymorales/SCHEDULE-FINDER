@@ -93,6 +93,7 @@ $(document).ready(function() {
         var file = e.target.files[0];
 
         if(option == "option1"){
+
             document.getElementById('image').style.display="none";
             document.getElementById('c1').innerHTML="ID";
             document.getElementById('c2').innerHTML="FIRSTNAME";
@@ -126,7 +127,7 @@ $(document).ready(function() {
         reader.readAsArrayBuffer(file);
         $('#previewModal').modal('show'); 
     }else{
-        var reader = new FileReader();
+            var reader = new FileReader();
             document.getElementById('image').style.display="none";
             document.getElementById('c1').innerHTML="ID";
             document.getElementById('c2').innerHTML="FIRSTNAME";
@@ -134,7 +135,7 @@ $(document).ready(function() {
             document.getElementById('c4').style.display="show";
             document.getElementById('c4').innerHTML="IMAGE PATH";
             document.getElementById('c5').style.display="none";
-        //document.getElementById('image').style.display="show";
+       //document.getElementById('image').style.display="show";
     
     reader.onload = function(e) {
         var data = new Uint8Array(e.target.result);
@@ -158,7 +159,7 @@ $(document).ready(function() {
     };
     
     reader.readAsArrayBuffer(file);
-    event.preventDefault();
+
     $('#previewModal').modal('show'); 
   
     }

@@ -819,8 +819,11 @@
     <?php include '../app/views/ajax/delete.php'; ?>
     <?php include '../app/views/ajax/upload.php'; ?>
     <?php include '../app/views/ajax/remove.php'; ?>
-
+    
     <?php include '../app/views/ajax/retrieveData.php'; ?>
+
+  
+
     <?php focusTable($tableAdmin) ?>
 
     

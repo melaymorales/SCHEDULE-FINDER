@@ -43,6 +43,11 @@ function focusTable($tableAdmin){
 
 function pagination($selectTag){
 
+    echo '
+    
+        <script> console.log("boom") </script>
+    ';
+
     if($selectTag == "course"){ ?>
 
          <script>
@@ -63,13 +68,23 @@ function pagination($selectTag){
             var selectedSection= document.getElementById("student_section").value;
             var paragraph = document.getElementById('page_section_student');
 
-            if (inputText.trim() !== '' && selectedYear !== '' && selectedSection !== '' ) {
+            if (inputText.trim() !== '' || selectedYear !== '' || selectedSection !== '' ) {
                 paragraph.style.display = 'none';
             } else {
                 paragraph.style.display = 'block';
             }
         </script>
-   <?php }
+   <?php }else if($selectTag == "show"){?>
+
+    <script>
+
+        console.log("owowow");
+         //alert('hello');
+        // var sect = document.getElementById("result_schedule");
+        //  sect.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    </script>
+
+   <?php } 
 
 }
 
