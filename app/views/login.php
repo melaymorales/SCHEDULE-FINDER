@@ -20,16 +20,21 @@
         </div>
     </nav>
   
-    <form action="<?=ROOT."/admin"?>" method="POST">
+    <form method="POST">
 
         <section class="resume-section pb-0" id="about">
             <div class="container-fluid p-0">
                 <div class="resume-section-content mb-5">
+                
+                <?php if(!empty($message)){ ?>
                     
-                <div class="alert alert-danger alert-dismissible fade <?= $_SESSION['alert'] ?>" role="alert">
-                        <strong> Invalid Username or Password </strong> !
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong> <?= $message ?></strong> 
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                    </div>
+                 
+                 <?php } ?>
+                 
                     <h1 class="mb-0 text-center" >
                         <span class="text-dark">Find My Schedule</span>
                     </h1>

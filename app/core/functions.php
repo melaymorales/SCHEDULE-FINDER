@@ -8,6 +8,8 @@ echo "<pre>";
 
 function focusTable($tableAdmin){
 
+ 
+
    if($tableAdmin == "course"){ ?>
 
     <script>

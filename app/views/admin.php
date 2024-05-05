@@ -150,6 +150,11 @@
                 </div>
         </form>
 
+        <div class="mt-0 mb-2 d-flex">
+       
+</div>
+
+
                     <div class="social-icons" style="height: 500px; overflow:scroll; "> 
                         <table id="myTable">
 
@@ -232,6 +237,7 @@
                 </table>
                     
                 </div>
+           
                 
                 <div class="my-5" id="page_section" >
                     <p class="text-secondary " >Page</p>

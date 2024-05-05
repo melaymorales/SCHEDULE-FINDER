@@ -4,6 +4,7 @@ class Home extends Controller
 {
     public function index()
     {
+        
      
          if(isset($_POST['submit'])){
             $arr['id'] = $_POST['id'];
@@ -56,7 +57,7 @@ class Home extends Controller
             }
          }else{
             $_SESSION['schedule']="d-none";
-            $_SESSION['image_schedule'] = "";
+           
          }
        
          $this->view('home',[
@@ -68,6 +69,7 @@ class Home extends Controller
 
         ]);
         $_SESSION['alert'] ="disabled";
+        $_SESSION['message'] ="";
     }
 
     private function viewData($data){

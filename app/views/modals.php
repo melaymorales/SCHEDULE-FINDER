@@ -88,10 +88,16 @@
                             <input class="form-check-input" type="radio" name="import" id="inlineRadio1" value="option1" checked>
                             <label class="form-check-label" for="inlineRadio1">New Course</label>
                         </div>
+                        <br><br>
                         <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="import" id="inlineRadio2" value="option2" >
                                 <label class="form-check-label" for="inlineRadio2">Upload Schedule</label>
                         </div> <br><br>
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="import" id="inlineRadio3" value="option3" >
+                                <label class="form-check-label" for="inlineRadio2">Delete Courses</label>
+                        </div> <br><br>
+                       
                     
                     <input type="file" class="form-control" id="import_file" name="import_file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  required>
                     
@@ -120,10 +126,14 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="import" id="inlineRadio1" value="option1" checked>
                             <label class="form-check-label" for="inlineRadio1">New Teacher</label>
-                        </div>
+                        </div> <br><br>
                         <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="import" id="inlineRadio2" value="option2" >
                                 <label class="form-check-label" for="inlineRadio2">Upload Schedule</label>
+                        </div> <br><br>
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="import" id="inlineRadio3" value="option3" >
+                                <label class="form-check-label" for="inlineRadio3">Delete Teacher</label>
                         </div> <br><br>
                     
                     <input type="file" class="form-control" id="import_file_teacher" name="import_file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  required>
@@ -150,6 +160,15 @@
                       <h5 class="modal-title" id="exampleModalLabel">IMPORT STUDENT</h5>
                 </div>
                 <div class="modal-body">
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="import" id="inlineRadio1" value="option1" checked>
+                            <label class="form-check-label" for="inlineRadio1">New Students</label>
+                        </div> 
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="import" id="inlineRadio2" value="option2" >
+                                <label class="form-check-label" for="inlineRadio2">Delete Students</label>
+                        </div> <br><br>
                     
                     <input type="file" class="form-control" id="import_file_student" name="import_file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  required>
                     
@@ -386,6 +405,43 @@
         </div>
     </div>
 </div>
+
+<!-- DELETE IMPORT -->
+
+<form  method="POST" enctype="multipart/form-data">
+
+    <div class="modal fade" id="course_delete_import" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bulk Delete Course</h5>
+                </div>
+                <div class="modal-body">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="import" id="inlineRadio1" value="option1" checked>
+                            <label class="form-check-label" for="inlineRadio1">New Course</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="import" id="inlineRadio2" value="option2" >
+                                <label class="form-check-label" for="inlineRadio2">Upload Schedule</label>
+                        </div> <br><br>
+                       
+                    
+                    <input type="file" class="form-control" id="import_file" name="import_file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  required>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">cancel</button>
+                    <button type="submit" class="btn btn-success" name="import_course_delete">submit</button>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 
 <!--logout -->
 

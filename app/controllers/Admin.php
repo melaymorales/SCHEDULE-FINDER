@@ -16,9 +16,11 @@ class Admin extends Controller{
 
     public function index(){
 
-     if(isset($_POST['login']) || $_SESSION['password'] != ""){
-
-     $this->login();
+    
+      if (!Auth::logged_in()) {
+            header("Location: ".ROOT."/login");
+      }
+    
 
       $this->register();
       $this->import();
@@ -99,11 +101,7 @@ class Admin extends Controller{
             'tableAdmin' => $_SESSION['tableAdmin']
      ]);
 
-     }else{
-            $_SESSION['alert'] = "disabled";
-        
-            header("location: ".ROOT."/login");
-      }
+   
     }
 
     private function register(){
@@ -211,6 +209,8 @@ class Admin extends Controller{
 
       $pathImage=array();
       $unsuccessfulImage = $duplicateImage ="";
+      $dltbtn = false;
+    
 
       
 
@@ -221,6 +221,7 @@ class Admin extends Controller{
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
             $allowed_ext = ['xls','csv','xlsx'];
+           
            
 
            if(in_array($file_ext, $allowed_ext))
@@ -269,11 +270,11 @@ class Admin extends Controller{
                                     $msg = true;
                                     
                               }else{
-                              
-                                   $course->insert($arr);
+                                   if($year == "1st" || $year == "2nd" || $year == "3rd" || $year == "4th" || $year == "grade 11" || $year == "grade 12"){
+                                   $course->insert($arr);}
                               }
 
-                        }else{
+                        }else if($_POST['import'] == "option2"){
                               $image= $row['4'];
                               $targetfile = "../app/views/assets/img/".basename($image);
                               $imagename= basename($image);
@@ -329,8 +330,36 @@ class Admin extends Controller{
                                     
                               
                               }
+                        }else if($_POST['import'] == "option3"){
+                         
+                              $data = $course->where($arr);
+                             
+                             if(!empty($data)){
+                                    $row = $data[0];
+                                    $id = $row->id;
+                                    
+                                          if(!empty($row->image)){
+                                                $imageToDelete=$row->image;
+                                                $folderPath="../app/views/assets/img/";
+
+                                                if(file_exists($folderPath.$imageToDelete)){
+                                                      unlink($folderPath . $imageToDelete);
+                                                }
+                              
+                                          }
+                                          if(empty($row->id)){
+                                                $dltbtn =false;
+                                          }else{
+                                                $dltbtn =true;
+                                                $course->delete_course($id);
+                                          }
+
+                                        
+
+                                        
+                                    
+                             }
                         }
-                        
                         }
                         else
                         {
@@ -338,16 +367,24 @@ class Admin extends Controller{
                         }
                   }
 
-                  if($_POST['import']=="option1" ||( $_POST['import']=="option2" && $unsuccessfulImage == "" && $duplicateImage == "") ){
-                        $_SESSION['alert_success_course']="d-show";
-                        $_SESSION['message'] = ($_POST['import']=="option1") ? "Successfully registered New Courses." :  "Successfully uploaded Course Scheduled." ;
-                        
-                        
-              
+                  if($_POST['import']=="option1" ||( $_POST['import']=="option2" && $unsuccessfulImage == "" && $duplicateImage == "")|| $_POST['import']=="option3" ){
+                       
+
+                        if($dltbtn){
+                              $_SESSION['alert_success_course']="d-show";
+                                $_SESSION['message'] = "Successfully Deleted  Courses." ;
+
+                        }else{
+                              if($dltbtn != false){
+                              $_SESSION['alert_success_course']="d-show";
+                              $_SESSION['message'] = ($_POST['import']=="option1") ? "Successfully registered New Courses." :  "Successfully uploaded Course Scheduled." ;
+                              }
+                        }
+             
                       
                     }else{
                         $_SESSION['alert_unsuccess_course']="d-show";
-
+                        
                         if($unsuccessfulImage != "" && $duplicateImage != ""){
                               $unsuccessfulImage = "[".trim($unsuccessfulImage, ",")."]";  $duplicateImage =  "[".trim($duplicateImage, ",")."]";   
                               $_SESSION['message']=$unsuccessfulImage." Unsuccessfully uploaded!\n\n".$duplicateImage." Already Exist!";
@@ -356,8 +393,10 @@ class Admin extends Controller{
                               $unsuccessfulImage = "[".trim($unsuccessfulImage, ",")."]";
                               $_SESSION['message']= $unsuccessfulImage." Unsuccessfully uploaded!";
                          }else{
-                              $duplicateImage =  "[".trim($duplicateImage, ",")."]";
-                              $_SESSION['message']=$duplicateImage." Already Exist!";
+                              if($dltbtn == false){
+                                    $duplicateImage =  "[".trim($duplicateImage, ",")."]";
+                                    $_SESSION['message']=$duplicateImage." Already Exist!";
+                              }
                          }
                   }            
             
@@ -369,6 +408,7 @@ class Admin extends Controller{
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
             $allowed_ext = ['xls','csv','xlsx'];
+            $dltbtn= false;
                   
             $teacher = new Teacher();
 
@@ -387,12 +427,13 @@ class Admin extends Controller{
                      
       
                         $id = $row['0'];
-                        $fname= ucfirst($row['1']);
-                        $lname=ucfirst($row['2']);
-
+                       
                         $teacher_data['id']= $id;
       
                         if($_POST['import'] == "option1"){
+                              $fname= ucfirst($row['1']);
+                              $lname=ucfirst($row['2']);
+      
                          
                         $exist = $teacher->where($teacher_data);
                               
@@ -403,7 +444,7 @@ class Admin extends Controller{
                               }
                              
 
-                        }else{
+                        }else if($_POST['import'] == "option2"){
                               $image= $row['3'];
                               $targetfile = "../app/views/assets/img/".basename($image);
                               $imagename= basename($image);
@@ -455,6 +496,30 @@ class Admin extends Controller{
                                     } 
                               
                               }
+                        }else if($_POST['import'] == "option3"){
+                         
+                              $data = $teacher->where($teacher_data);
+                             
+                             if(!empty($data)){
+                                    $row = $data[0];
+                                    $id = $row->row;
+                                    
+                                          if(!empty($row->image)){
+                                                $imageToDelete=$row->image;
+                                                $folderPath="../app/views/assets/img/";
+
+                                                if(file_exists($folderPath.$imageToDelete)){
+                                                      unlink($folderPath . $imageToDelete);
+                                                }
+                              
+                                          }
+                                          if(empty($row->row)){
+                                                $dltbtn =false;
+                                          }else{
+                                                $dltbtn =true;
+                                                $teacher->delete($id);
+                                          }     
+                             }
                         }
                         
                   }
@@ -464,10 +529,18 @@ class Admin extends Controller{
                   }
             }
 
-            if($_POST['import']=="option1" ||( $_POST['import']=="option2" && $unsuccessfulImage == "" && $duplicateImage == "")){
-                  $_SESSION['alert_success_teacher']="d-show";
-                  $_SESSION['message'] = ($_POST['import']=="option1") ? "Successfully registered New Teachers." :  "Successfully uploaded Teacher Scheduled." ;
-                
+            if($_POST['import']=="option1" ||( $_POST['import']=="option2" && $unsuccessfulImage == "" && $duplicateImage == "")||$_POST['import']=="option3" ){
+                  if($dltbtn == true){
+
+                        $_SESSION['alert_success_teacher']="d-show";
+                        $_SESSION['message'] = "Successfully Deleted Teachers";
+
+                  }else{
+                        if($dltbtn != false){
+                              $_SESSION['alert_success_teacher']="d-show";
+                              $_SESSION['message'] = ($_POST['import']=="option1") ? "Successfully registered New Teachers." :  "Successfully uploaded Teacher Scheduled." ;
+                        }
+                  }
               }else{
                   $_SESSION['alert_unsuccess_teacher']="d-show";
                   if($unsuccessfulImage != "" && $duplicateImage != ""){
@@ -486,11 +559,12 @@ class Admin extends Controller{
          }
        
          $_SESSION['tableAdmin']="teacher";
+         
       }else if(isset($_POST['import_student'])){
 
         
             $student = new Student();
-          
+            $dltbtn =false;
 
             $fileName = $_FILES['import_file']['name'];
             $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -511,6 +585,8 @@ class Admin extends Controller{
                         if($count > 0)
                         {
                         $id= $row['0'];
+
+                       if($_POST['import'] == "option1"){
                         $fname= $row['1'];
                         $lname=$row['2'];
                         $course=strtoupper($row['3']);
@@ -541,27 +617,44 @@ class Admin extends Controller{
                         
                         $exist = $course_class->where($arrr);
                    
-                       
+                        
                               if(!empty($exist)){
 
                         
                                     $arr['id'] = $id;
                                     $exist = $student->where($arr);
 
+                                    
+
                                     if(empty($exist)){
+                                          
+                                          if($_POST['import'] == "option1"){
+                                         
                                           $arr['firstname'] = $fname;
                                           $arr['lastname'] = $lname;
                                           $arr['course'] = $course;
                                           $arr['year'] = $year;
                                           $arr['section'] = $section;
-
-                                          $student->insert($arr);
+                                          $student->insert($arr);}
                                     }
                               
-
                               }else{
                                     $unsuccessful_import .= $id." ,";
                               }  
+
+                        }else if($_POST['import'] == "option2"){
+                              $arr_id['id'] = $id;
+                              $data = $student->where($arr_id);
+
+                              if(!empty($data)){
+                                    $row = $data[0];
+                                    $id = $row->row;
+
+                                    $student->delete($id);
+                                    $dltbtn =true;
+                                    
+                              }
+                        }
                         
                         }
                         else
@@ -571,8 +664,15 @@ class Admin extends Controller{
                   }
 
                   if($unsuccessful_import == ""){
-                        $_SESSION['alert_success_student']="d-show";
-                        $_SESSION['message']="Successfully registered New Students.";
+                        if($_POST['import'] == "option2" && $dltbtn == true){
+                              $_SESSION['alert_success_student']="d-show";
+                              $_SESSION['message']="Successfully deleted Students.";
+                        }else{
+                              if($dltbtn != false){
+                                    $_SESSION['alert_success_student']="d-show";
+                                    $_SESSION['message']="Successfully registered New Students.";
+                              }
+                        }
                  
                   }else{
                         $_SESSION['alert_unsuccess_student']="d-show";
@@ -884,13 +984,13 @@ class Admin extends Controller{
 
                     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                
-                          $id =  $_SESSION['id'];
+                          $idd =  $_SESSION['id'];
                           date_default_timezone_set('Asia/Manila');
                           $currentDateTime = date('m/d/Y h:ia');
 
                           $arr_image['image'] = $imageName;
                           $arr_image['date'] =$currentDateTime;
-                          $teacher->update($id,$arr_image);
+                          $teacher->update($idd,$arr_image);
                        
                        } else {
                               $_SESSION['alert_unsuccess_teacher']="d-show";
@@ -1059,12 +1159,98 @@ class Admin extends Controller{
   private function logout(){
 
       if(isset($_POST['logout'])){
-            $_SESSION['alert']="disabled";
-            $_SESSION['password'] = "";    
-            
+            // $_SESSION['alert']="disabled";
+            // $_SESSION['password'] = "";    
+
+            Auth::logout();
             header("Location: ".ROOT."/home");
       }
         
+  }
+
+  private function importFordelete(){
+      if(isset($_POST['course_delete_import'])){
+            $course = new Course();
+            $fileName = $_FILES['import_file']['name'];
+            $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            $allowed_ext = ['xls','csv','xlsx'];
+
+            if(in_array($file_ext, $allowed_ext))
+            {
+                 $inputFileNamePath = $_FILES['import_file']['tmp_name'];
+                 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
+                 $data = $spreadsheet->getActiveSheet()->toArray();
+
+                  $count = "0";
+                  foreach($data as $row)
+                  {
+                      
+
+                        if($count > 0)
+                        {
+
+                        $acronym= strtoupper($row['0']);
+                        $year=strtolower($row['1']);
+                        $section= strtoupper($row['2']);
+
+                        if($year=="1"){
+                              $year="1st";
+                        }else if($year=="2"){
+                              $year="2nd";
+                        }else if($year=="3"){
+                              $year="3rd";
+                        }else if($year=="4"){
+                              $year="4th";
+                        }else if($year=="grade11" || $year=="grade  11" || $year == "11"){
+                              $year="grade 11";
+                        }else if($year=="grade12" || $year=="grade  12" ||  $year == "12"){
+                              $year="grade 12";
+
+                        }
+                        $arr['acronym']=$acronym;
+                        $arr['year']=$year;
+                        $arr['section']=$section;
+
+
+                              $current_course = $course->where($arr);
+
+                              if(!empty($current_course)){
+                                  
+                                    $data = $course->where($arr);
+
+                                    foreach($data as $row){
+                                          $id = $row->id;
+                                          $course->delete_course($id);
+
+                                    }
+
+                              }else{
+                              
+                                   $course->insert($arr);
+                              }
+
+                      
+                            
+                        
+                        
+                        }
+                        else
+                        {
+                           $count = "1";
+                        }
+                  }
+
+                      
+            
+        }
+            
+           
+
+      }else if(isset($_POST['teacher_delete_import'])){
+
+      }else if(isset($_POST['student_delete_import'])){
+
+      }
   }
 }
 

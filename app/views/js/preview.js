@@ -6,7 +6,7 @@ $(document).ready(function() {
         var option = document.querySelector('input[name="import"]:checked').value;
         var file = e.target.files[0];
 
-        if(option == "option1"){
+        if(option == "option1" || option == "option3" ){
   
             document.getElementById('c1').innerHTML="COURSE/STRAND";
             document.getElementById('c2').innerHTML="ACRONYM";
@@ -92,6 +92,8 @@ $(document).ready(function() {
         var option = document.querySelector('input[name="import"]:checked').value;
         var file = e.target.files[0];
 
+        
+
         if(option == "option1"){
 
             document.getElementById('image').style.display="none";
@@ -125,7 +127,7 @@ $(document).ready(function() {
         };
     
         reader.readAsArrayBuffer(file);
-        $('#previewModal').modal('show'); 
+       $('#previewModal').modal('show'); 
     }else{
             var reader = new FileReader();
             document.getElementById('image').style.display="none";
@@ -175,7 +177,7 @@ $(document).ready(function() {
         // Check if a file is selected
         if (file) {
 
-           document.getElementById('c1').innerHTML="ID";
+        document.getElementById('c1').innerHTML="ID";
         document.getElementById('c2').innerHTML="FIRSTNAME";
         document.getElementById('c3').innerHTML="LASTNAME";
         document.getElementById('c4').style.display="show";

@@ -253,7 +253,7 @@ if(isset($_POST['view_course'])){
         $data= $student->where($arr_s);
 
     }else if($section == "" && $name != "" && $year != ""){
-        $data = $student->student_search__section($name,$year);
+        $data = $student->student_search__year($name,$year);
     
     }else if($section != "" && $name != "" && $year == ""){
         $data = $student->student_search__section($name,$section);
@@ -261,9 +261,12 @@ if(isset($_POST['view_course'])){
     }else if($section != "" && $name != "" && $year != ""){
        $data= $student->student_search_section__year($name,$year, $section );
 
+    }else if($section == "" && $name == "" && $year != ""){
+        $arr_s['year'] = $year;
+        $data= $student->where($arr_s);
     }
     else{
-       // $data = $student->student_search($name);
+        $data = $student->student_search($name);
     }
 
     if(!empty($data)){
@@ -319,7 +322,7 @@ if($selectedItem == "" && $course == "" && $section==""){
 
 
 }else if($selectedItem != "" && $course != "" && $section !=""){
-    $data = student_search_section__year($course,$selectedItem,$section);
+    $data = $student->student_search_section__year($course,$selectedItem,$section);
 
 }else if($selectedItem != "" && $course == ""  && $section == ""){
 
@@ -652,6 +655,52 @@ $('.btnRemove_teacher').click(function(e){
         }
         });
 });
+
+</script>
+
+<script>
+
+$(document).ready(function(){
+
+  $('.btnUpload').click(function(e){
+            e.preventDefault();
+
+            var user_id= $(this).closest('tr').find('.user_id').text();
+     
+           
+            $.ajax({
+                method:"POST",
+                url:"../app/views/ajax/upload.php",
+                data:{
+                    'click_view_btn':true,
+                    'user_id':user_id,
+                },
+                success: function(response){
+
+                }
+            });
+  });
+
+  $('.btnUpload_teacher').click(function(e){
+            e.preventDefault();
+
+            var user_id= $(this).closest('tr').find('.user_id_teacher').text();
+            
+          
+            $.ajax({
+                method:"POST",
+                url:"../app/views/ajax/upload.php",
+                data:{
+                    'click_view_btn':true,
+                    'user_id':user_id,
+                },
+                success: function(response){
+
+                }
+            });
+    });
+
+ });
 
 </script>
 
